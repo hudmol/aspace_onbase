@@ -1,7 +1,7 @@
 class ArchivesSpaceService < Sinatra::Base
 
 
-  Endpoint.post('/onbase_documentss/:id')
+  Endpoint.post('/onbase_documents/:id')
     .description("Update an Onbase Document")
     .params(["id", :id],
             ["onbase_document", JSONModel(:onbase_document), "The updated record", :body => true])
@@ -52,4 +52,14 @@ class ArchivesSpaceService < Sinatra::Base
     handle_delete(OnbaseDocument, params[:id])
   end
 
+
+  Endpoint.get('/search/onbase_document')
+  .description("Search across OnBase Documents")
+  .params(*BASE_SEARCH_PARAMS)
+  .permissions([])
+  .paginated(true)
+  .returns([200, ""]) \
+  do
+    json_response(Search.search(params.merge(:type => ['onbase_document']), nil))
+  end
 end

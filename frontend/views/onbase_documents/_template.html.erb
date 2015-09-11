@@ -1,0 +1,5 @@
+<% define_template("onbase_document", jsonmodel_definition(:onbase_document)) do |form| %>
+  <div class="subrecord-form-fields">
+    <%= render_aspace_partial :partial => "onbase_documents/linker", :locals => { :form => form }%>
+  </div>
+<% end %>

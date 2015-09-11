@@ -1,0 +1,22 @@
+en:
+  plugins:
+    aspace_onbase:
+      _plural: OnBase Documents
+      _singular: OnBase Document
+    onbase_documents:
+      label: OnBase Documents
+    onbase_document: &onbase_document_attributes
+      _plural: OnBase Documents
+      _singular: OnBase Document
+      onbase_id: OnBase ID
+      name: Name
+      keywords: Keywords
+      _frontend:
+        action:
+          add: Add OnBase Document
+          save: Save OnBase Document
+          create: Create an OnBase Document
+        messages:
+          updated: OnBase Document Saved
+  onbase_document:
+    <<: *onbase_document_attributes

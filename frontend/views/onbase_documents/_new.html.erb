@@ -1,0 +1,6 @@
+<%= form_for @onbase_document, :as => "onbase_document", :url => {:action => :create}, :html => {:class => 'form-horizontal aspace-record-form'} do |f| %>
+  <%= form_context :onbase_document, @onbase_document do |form| %>
+    <%= hidden_field "inline", "true" %>
+    <%= render_aspace_partial :partial => "onbase_documents/form", :locals => {:form => form} %>
+  <% end %>
+<% end %>

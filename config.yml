@@ -1,0 +1,5 @@
+repository_menu_controller: onbase_documents
+parents:
+  accession:
+    name: onbase_documents
+    cardinality: zero_to_many

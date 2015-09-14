@@ -1,0 +1,46 @@
+<%= render_aspace_partial :partial => "shared/form_messages", :locals => {:object => @onbase_document, :form => form} %>
+
+<%
+  onBaseImportRequired = form.obj["onbase_id"].blank?
+%>
+
+<fieldset id="onbaseDocumentFormFields">
+  <% define_template "onbase_document", jsonmodel_definition(:onbase_document) do |form| %>
+    <section id="onBaseRecordDetails">
+      <h3>OnBase Record Details</h3>
+      <% if onBaseImportRequired %>
+        <div class="alert alert-warning">
+          OnBase Record fields will be populated and become editable once the document is imported to OnBase
+        </div>
+      <% end %>
+      <%= form.hidden_input "onbase_id", nil, {:disabled => onBaseImportRequired} %>
+      <%= form.label_and_readonly "onbase_id", "Document Import Required" %>
+      <%= form.label_and_textfield "name", {:field_opts => {:disabled => onBaseImportRequired}} %>
+      <%= form.label_and_textarea "keywords", {:field_opts => {:disabled => onBaseImportRequired}} %>
+    </section>
+  <% end %>
+
+  <% if onBaseImportRequired %>
+    <section id="importOnBaseRecordSection">
+      <h3>Import OnBase Record</h3>
+      <div class="form-group required">
+        <label class="col-sm-2 control-label" for="onbase_document_file_">File to Import</label>
+        <div class="col-sm-9">
+          <input class="form-control" id="onbase_document_file_" name="onbase_document[file]" type="file" value="">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-9">
+          <button class="btn btn-primary" id="importOnBaseRecord">Import File</button>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <% form.emit_template("onbase_document") %>
+</fieldset>
+
+<script>
+  new OnBaseRecordForm($("#onbaseDocumentFormFields"));
+</script>

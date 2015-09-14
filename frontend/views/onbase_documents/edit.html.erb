@@ -1,0 +1,24 @@
+<%= setup_context :object => @onbase_document, :title => @onbase_document.name %>
+
+<%= form_for @onbase_document, :as => "onbase_document", :url => {:action => :update}, :html => {:class => 'form-horizontal aspace-record-form'}.merge(update_monitor_params(@onbase_document)) do |f| %>
+  <%= form_context :onbase_document, @onbase_document do |form| %>
+    <div class="row">
+      <div class="col-md-3">
+        <%= render_aspace_partial :partial => "sidebar" %>
+      </div>
+      <div class="col-md-9">
+        <%= render_aspace_partial :partial => "toolbar" %>
+        <div class="record-pane">
+          <%= link_to_help :topic => "onbase_document" %>
+          <h2><%= @onbase_document.name %>  <span class="label label-info"><%= I18n.t("onbase_document._singular") %></span></h2>
+          <br/>
+          <%= render_aspace_partial :partial => "onbase_documents/form", :locals => {:form => form} %>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><%= I18n.t("onbase_document._frontend.action.save") %></button>
+            <%= link_to I18n.t("actions.cancel"), :back, :class => "btn btn-cancel btn-default" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

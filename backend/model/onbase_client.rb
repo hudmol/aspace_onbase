@@ -12,12 +12,17 @@ class OnbaseClient
 
   def upload(file_stream, file_name, content_type, doc_type, log_user, keywords = "")
 
-    req = Net::HTTP::Post::Multipart.new(@url.path,
-                                         "file" => UploadIO.new(file_stream, content_type, file_name))
+    url = @url
+    url.query = URI.encode_www_form([["documentTypeName", doc_type],
+                                     ["logUser", log_user]])
+
+    req = Net::HTTP::Post::Multipart.new("#{url.path}?#{url.query}",
+                                         "file" => UploadIO.new(file_stream, content_type, file_name),
+                                         "keywordData" => keywords)
 
     req.basic_auth @username, @password
 
-    res = Net::HTTP.start(@url.host, @url.port) do |http|
+    res = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') do |http|
       http.request(req)
     end
 

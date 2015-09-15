@@ -1,0 +1,1 @@
+RightsStatement.include(OnbaseDocuments)

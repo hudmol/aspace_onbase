@@ -23,7 +23,19 @@ Sequel.migration do
     create_table(:onbase_document_rlshp) do
       primary_key :id
       Integer :onbase_document_id
+
       Integer :accession_id
+      Integer :archival_object_id
+      Integer :resource_id
+      Integer :subject_id
+      Integer :agent_person_id
+      Integer :agent_family_id
+      Integer :agent_corporate_entity_id
+      Integer :agent_software_id
+      Integer :rights_statement_id
+      Integer :digital_object_id
+      Integer :digital_object_component_id
+
       Integer :aspace_relationship_position
 
       apply_mtime_columns(false)
@@ -32,6 +44,16 @@ Sequel.migration do
     alter_table(:onbase_document_rlshp) do
       add_foreign_key([:onbase_document_id], :onbase_document, :key => :id)
       add_foreign_key([:accession_id], :accession, :key => :id)
+      add_foreign_key([:archival_object_id], :archival_object, :key => :id)
+      add_foreign_key([:resource_id], :resource, :key => :id)
+      add_foreign_key([:subject_id], :subject, :key => :id)
+      add_foreign_key([:agent_person_id], :agent_person, :key => :id)
+      add_foreign_key([:agent_family_id], :agent_family, :key => :id)
+      add_foreign_key([:agent_corporate_entity_id], :agent_corporate_entity, :key => :id)
+      add_foreign_key([:agent_software_id], :agent_software, :key => :id)
+      add_foreign_key([:rights_statement_id], :rights_statement, :key => :id)
+      add_foreign_key([:digital_object_id], :digital_object, :key => :id)
+      add_foreign_key([:digital_object_component_id], :digital_object_component, :key => :id)
     end
 
 

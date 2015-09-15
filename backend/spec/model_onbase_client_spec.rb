@@ -15,11 +15,8 @@ describe 'Onbase Client model' do
     client = OnbaseClient.new(opts)
 
     up_file = File.new(__FILE__, 'r')
-    keywords = "{'moo' => 'moo';}"
-    docId = client.upload(up_file, keywords)
-
+    docId = client.upload(up_file, "test.txt", "text/plain", "SPCL-Deed", "me", '{"moo": "moo"}')
     docId.should eq("999")
-
     down_file = client.get(docId)
   end
 

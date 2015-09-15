@@ -3,17 +3,18 @@ require 'net/http/post/multipart'
 
 class OnbaseClient
 
-  def initialize(opts)
+  def initialize(opts = {})
     @url = URI.parse('https://onbase-dev.dartmouth.edu/api/OWMROBIInstance/api/documents/')
     @username = 'me'
     @password = 'reallyme'
   end
 
 
-  def upload(docStream, keywords)
+  def upload(file_stream, file_name, content_type, doc_type, log_user, keywords = "")
 
-    req = Net::HTTP::Post::Multipart.new @url.path,
-    "file" => UploadIO.new(docStream, "image/jpeg", "file.jpg")
+    req = Net::HTTP::Post::Multipart.new(@url.path,
+                                         "file" => UploadIO.new(file_stream, content_type, file_name))
+
     req.basic_auth @username, @password
 
     res = Net::HTTP.start(@url.host, @url.port) do |http|

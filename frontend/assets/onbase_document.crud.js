@@ -7,10 +7,10 @@ function OnBaseRecordForm($container, onFormUpload) {
   this.$progress = this.$container.find("#importOnBaseRecordProgress").hide();
   this.$progressBar = $(".progress-bar", this.$progress)
 
-  this.setup();
+  this.setupForm();
 };
 
-OnBaseRecordForm.prototype.setup = function() {
+OnBaseRecordForm.prototype.setupForm = function() {
   var self = this;
 
   self.$form.ajaxForm({
@@ -29,43 +29,11 @@ OnBaseRecordForm.prototype.setup = function() {
       self.$progress.removeClass("active").removeClass("progress-striped");
       self.$progressBar.addClass("progress-bar-success");
 
-      $("#importOnBaseRecordResult", self.$container).show().text(JSON.stringify(json));
-
       self.onFormUpload(json);
     },
     error: function(xhr) {
       alert("error");
     }
-  });
-
-
-  self.$container.on("click", "#importOnBaseRecord", function(event) {
-    event.preventDefault();
-
-    self.$form.ajaxSubmit({
-      type: "POST",
-
-      beforeSubmit: function(arr, $form, options) {
-        $("#importOnBaseRecord").remove();
-        self.$progress.show();
-      },
-      uploadProgress: function(event, position, total, percentComplete) {
-        var percentVal = percentComplete + '%';
-        self.$progressBar.width(percentVal);
-      },
-      success: function(json, status, xhr) {
-        var percentVal = '100%';
-        self.$progressBar.width(percentVal)
-        self.$progress.removeClass("active").removeClass("progress-striped");
-        self.$progressBar.addClass("progress-bar-success");
-
-        $("#importOnBaseRecordResult", self.$container).show().text(JSON.stringify(json));
-        //self.$outerContainer.find(":submit").prop("disabled", false);
-      },
-      error: function(xhr) {
-        alert("error");
-      }
-    });
   });
 };
 
@@ -102,8 +70,8 @@ OnBaseRecordLinker.prototype.openUploadModal = function(formUrl) {
 
   function onFormUpload(json) {
     self.$linker.tokenInput("add", {
-      id: "TODO",
-      name: "TODO",
+      id: json.uri,
+      name: json.display_string,
       json: json
     });
 

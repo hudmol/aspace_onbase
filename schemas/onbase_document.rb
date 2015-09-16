@@ -9,6 +9,7 @@
       "onbase_id" => {"type" => "string", "maxLength" => 255, "ifmissing" => "error"},
       "name" => {"type" => "string", "ifmissing" => "error", "dynamic_enum" => "onbase_document_type"},
       "keywords" => {"type" => "string"},
+      "display_string" => {"type" => "string", "readonly" => "true"},
     },
   },
 }

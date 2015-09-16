@@ -35,6 +35,7 @@ Sequel.migration do
       Integer :rights_statement_id
       Integer :digital_object_id
       Integer :digital_object_component_id
+      Integer :event_id
 
       Integer :aspace_relationship_position
 
@@ -54,6 +55,7 @@ Sequel.migration do
       add_foreign_key([:rights_statement_id], :rights_statement, :key => :id)
       add_foreign_key([:digital_object_id], :digital_object, :key => :id)
       add_foreign_key([:digital_object_component_id], :digital_object_component, :key => :id)
+      add_foreign_key([:event_id], :event, :key => :id)
     end
 
 

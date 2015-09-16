@@ -3,3 +3,6 @@ parents:
   accession:
     name: onbase_documents
     cardinality: zero_to_many
+  event:
+    name: onbase_documents
+    cardinality: zero_to_many

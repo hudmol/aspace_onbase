@@ -1,5 +1,6 @@
 class ArchivesSpaceService < Sinatra::Base
 
+  # TODO: use update_onbase_record permissions where needed
 
   Endpoint.post('/onbase_documents/:id')
     .description("Update an Onbase Document")

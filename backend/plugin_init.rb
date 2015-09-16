@@ -5,3 +5,6 @@ Permission.define("update_onbase_record",
 Permission.define("delete_onbase_record",
                   "The ability to delete onbase records",
                   :level => "global")
+
+
+require_relative "../lib/document_keyword_definitions"

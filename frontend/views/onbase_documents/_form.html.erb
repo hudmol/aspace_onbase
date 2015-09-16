@@ -4,7 +4,7 @@
   onBaseImportRequired = form.obj["onbase_id"].blank?
 %>
 
-<fieldset id="onbaseDocumentFormFields">
+<fieldset id="onbaseDocumentFormFields" data-upload-url="<%= url_for :controller => :onbase_documents, :action => :upload %>">
   <% define_template "onbase_document", jsonmodel_definition(:onbase_document) do |form| %>
     <% if onBaseImportRequired %>
       <section id="importOnBaseRecordSection">
@@ -19,17 +19,9 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="col-sm-2"></div>
-          <div class="col-sm-9">
-            <div id="importOnBaseRecordProgress" class="progress">
-              <div class="progress-bar" style="width:1%"></div>
-            </div>
-            <button class="btn btn-primary" id="importOnBaseRecord">Import File</button>
-          </div>
+        <div id="importOnBaseRecordProgress" class="progress">
+            <div class="progress-bar" style="width:1%"></div>
         </div>
-
-        <hr>
 
         <pre id="importOnBaseRecordResult" style="display:none"></pre>
       </section>
@@ -49,7 +41,3 @@
   <% form.emit_template("onbase_document") %>
 
 </fieldset>
-
-<script>
-  new OnBaseRecordForm($("#onbaseDocumentFormFields"), "<%= url_for :controller => :onbase_documents, :action => :upload %>");
-</script>

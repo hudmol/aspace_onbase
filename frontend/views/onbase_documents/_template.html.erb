@@ -1,5 +1,13 @@
 <% define_template("onbase_document", jsonmodel_definition(:onbase_document)) do |form| %>
   <div class="subrecord-form-fields">
     <%= render_aspace_partial :partial => "onbase_documents/linker", :locals => { :form => form }%>
+
+    <div id="aspace_onbase_upload_template"><!--
+      <div class="modal-body upload-onbase-document-container"></div>
+      <div class="modal-footer">
+        <button id="uploadAndLinkOnBaseDocumentButton" class="btn btn-primary">Upload and Link to OnBase Document</button>
+        <button class="btn btn-cancel btn-default" data-dismiss="modal"><%= I18n.t "actions.cancel" %></button>
+      </div>
+    --></div>
   </div>
 <% end %>

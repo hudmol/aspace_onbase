@@ -11,15 +11,6 @@
     </div>
   </div>
   <div class="col-md-9">
-    <% if user_can?('manage_repository') %>
-      <div class="record-toolbar">
-        <div class="btn-group pull-right">
-          <%= link_to I18n.t("plugins.onbase_document._frontend.action.create"), {:controller => :onbase_documents, :action => :new}, :class => "btn btn-sm btn-default" %>
-        </div>
-        <br style="clear:both" />
-      </div>
-    <% end %>
-
     <div class="record-pane">
       <%= link_to_help :topic => "search" %>
 

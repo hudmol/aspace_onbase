@@ -13,6 +13,27 @@ class ArchivesSpaceService < Sinatra::Base
   end
 
 
+  Endpoint.post('/onbase_upload')
+    .description("Upload a document to Onbase and return its assigned ID")
+    .params(["file", UploadFile],
+            ["document_type", String])
+    .permissions([:update_onbase_record])
+    .returns([200, :created]) \
+  do
+    client = OnbaseClient.new
+    file = params[:file]
+
+    # p client.upload(file.tempfile, file.original_filename, file.content_type, params[:document_type], current_user.username)
+
+    onbase_id = SecureRandom.hex
+
+    json = JSONModel(:onbase_document).from_hash(:onbase_id => onbase_id,
+                                                 :name => params[:document_type])
+
+    handle_create(OnbaseDocument, json)
+  end
+
+
   Endpoint.post('/onbase_documents')
     .description("Create an Onbase Document")
     .params(["onbase_document", JSONModel(:onbase_document), "The record to create", :body => true])

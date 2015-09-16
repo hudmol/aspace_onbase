@@ -28,7 +28,18 @@ class OnbaseDocumentsController < ApplicationController
   end
 
   def create
-    render :json => params
+    file = params[:onbase_document][:file]
+
+    File.open(file.tempfile) do |fh|
+      response = JSONModel::HTTP.post_form("/onbase_upload",
+                                           {
+                                             'file' => UploadIO.new(fh, file.content_type, file.original_filename),
+                                             'document_type' => params[:onbase_document][:name]
+                                           },
+                                           :multipart_form_data)
+
+      render :json => ASUtils.json_parse(response.body)
+    end
   end
 
   def update

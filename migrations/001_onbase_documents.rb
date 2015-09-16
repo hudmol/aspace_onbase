@@ -10,7 +10,7 @@ Sequel.migration do
       Integer :json_schema_version, :null => false
 
       String :onbase_id, :null => false
-      String :name, :null => false
+      DynamicEnum :name_id, :null => false
       TextField :keywords
 
       apply_mtime_columns
@@ -59,7 +59,7 @@ Sequel.migration do
     end
 
 
-    create_editable_enum("onbase_document_name", ["SPCL-Agent Correspondence", "SPCL-Deed", "SPCL-Transfer Receipt", "SPCL-Dealer Object Description", "SPCL-Processing Plan", "SPCL-Accession Snapshot", "SPCL-Preservation Photos", "SPCL-Preservation Documentation", "SPCL-Missing Items record", "SPCL-Oral History Release Forms", "SPCL-Deaccession record", "SPCL-Patron Registration Forms", "SPCL-Permission to Publish", "SPCL-Loan Agreement", "SPCL-Facilities Report", "SPCL-Insurance Valuations"])
+    create_editable_enum("onbase_document_type", ["SPCL-Agent Correspondence", "SPCL-Deed", "SPCL-Transfer Receipt", "SPCL-Dealer Object Description", "SPCL-Processing Plan", "SPCL-Accession Snapshot", "SPCL-Preservation Photos", "SPCL-Preservation Documentation", "SPCL-Missing Items record", "SPCL-Oral History Release Forms", "SPCL-Deaccession record", "SPCL-Patron Registration Forms", "SPCL-Permission to Publish", "SPCL-Loan Agreement", "SPCL-Facilities Report", "SPCL-Insurance Valuations"])
 
   end
 

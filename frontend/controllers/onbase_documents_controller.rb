@@ -1,7 +1,8 @@
 class OnbaseDocumentsController < ApplicationController
 
+  # FIXME: use proper permission here
   set_access_control  "view_repository" => [:index, :show],
-                      "manage_repository" => [:new, :edit, :create, :update, :merge, :delete]
+                      "manage_repository" => [:new, :edit, :create, :update, :merge, :delete, :upload]
 
 
 
@@ -61,5 +62,8 @@ class OnbaseDocumentsController < ApplicationController
     redirect_to(:controller => :onbase_documents, :action => :index, :deleted_uri => onbase_document.uri)
   end
 
+  def upload
+    render :json => params
+  end
 
 end

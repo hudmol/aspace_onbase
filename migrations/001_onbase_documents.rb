@@ -59,6 +59,8 @@ Sequel.migration do
     end
 
 
+    create_editable_enum("onbase_document_name", ["SPCL-Agent Correspondence", "SPCL-Deed", "SPCL-Transfer Receipt", "SPCL-Dealer Object Description", "SPCL-Processing Plan", "SPCL-Accession Snapshot", "SPCL-Preservation Photos", "SPCL-Preservation Documentation", "SPCL-Missing Items record", "SPCL-Oral History Release Forms", "SPCL-Deaccession record", "SPCL-Patron Registration Forms", "SPCL-Permission to Publish", "SPCL-Loan Agreement", "SPCL-Facilities Report", "SPCL-Insurance Valuations"])
+
   end
 
   down do

@@ -1,4 +1,5 @@
 repository_menu_controller: onbase_documents
+no_automatic_routes: true
 parents:
   accession:
     name: onbase_documents

@@ -6,41 +6,50 @@
 
 <fieldset id="onbaseDocumentFormFields">
   <% define_template "onbase_document", jsonmodel_definition(:onbase_document) do |form| %>
-    <section id="onBaseRecordDetails">
-      <h3>OnBase Record Details</h3>
-      <% if onBaseImportRequired %>
-        <div class="alert alert-warning">
-          OnBase Record fields will be populated and become editable once the document is imported to OnBase
-        </div>
-      <% end %>
-      <%= form.hidden_input "onbase_id", nil, {:disabled => onBaseImportRequired} %>
-      <%= form.label_and_readonly "onbase_id", "Document Import Required" %>
-      <%= form.label_and_textfield "name", {:field_opts => {:disabled => onBaseImportRequired}} %>
-      <%= form.label_and_textarea "keywords", {:field_opts => {:disabled => onBaseImportRequired}} %>
-    </section>
-  <% end %>
+    <% if onBaseImportRequired %>
+      <section id="importOnBaseRecordSection">
+        <h3>Import OnBase Record</h3>
 
-  <% if onBaseImportRequired %>
-    <section id="importOnBaseRecordSection">
-      <h3>Import OnBase Record</h3>
-      <div class="form-group required">
-        <label class="col-sm-2 control-label" for="onbase_document_file_">File to Import</label>
-        <div class="col-sm-9">
-          <input class="form-control" id="onbase_document_file_" name="onbase_document[file]" type="file" value="">
+        <%= form.label_and_select "name", form.possible_options_for("name", true), :required => true %>
+
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="onbase_document_file_">File to Import</label>
+          <div class="col-sm-9">
+            <input class="form-control" id="onbase_document_file_" name="onbase_document[file]" type="file" value="">
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-9">
-          <button class="btn btn-primary" id="importOnBaseRecord">Import File</button>
+
+        <div class="form-group">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-9">
+            <div id="importOnBaseRecordProgress" class="progress">
+              <div class="progress-bar" style="width:1%"></div>
+            </div>
+            <button class="btn btn-primary" id="importOnBaseRecord">Import File</button>
+          </div>
         </div>
-      </div>
-    </section>
+
+        <hr>
+
+        <pre id="importOnBaseRecordResult" style="display:none"></pre>
+      </section>
+    <% else %>
+      <section id="onBaseRecordDetails">
+        <h3>OnBase Record Details</h3>
+
+        <p>TODO</p>
+        <%# form.label_and_readonly "onbase_id", "Document Import Required" %>
+        <%# form.label_and_textfield "name", {:field_opts => {:disabled => onBaseImportRequired}} %>
+        <%# form.label_and_textarea "keywords", {:field_opts => {:disabled => onBaseImportRequired}} %>
+      </section>
+    <% end %>
+    <%= form.hidden_input "onbase_id" %>
   <% end %>
 
   <% form.emit_template("onbase_document") %>
+
 </fieldset>
 
 <script>
-  new OnBaseRecordForm($("#onbaseDocumentFormFields"));
+  new OnBaseRecordForm($("#onbaseDocumentFormFields"), "<%= url_for :controller => :onbase_documents, :action => :upload %>");
 </script>

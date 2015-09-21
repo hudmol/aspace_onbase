@@ -31,7 +31,7 @@ class OnbaseDocumentsController < ApplicationController
   def create
     file = params[:onbase_document][:file]
     keywords = params[:keywords] || {}
-    document_type = params[:onbase_document][:name]
+    document_type = params[:onbase_document][:document_type]
 
     errors = []
 
@@ -54,7 +54,7 @@ class OnbaseDocumentsController < ApplicationController
       response = JSONModel::HTTP.post_form("/onbase_upload",
                                            {
                                              'file' => UploadIO.new(fh, file.content_type, file.original_filename),
-                                             'document_type' => params[:onbase_document][:name]
+                                             'document_type' => params[:onbase_document][:document_type]
                                            },
                                            :multipart_form_data)
 

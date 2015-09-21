@@ -11,7 +11,7 @@
       <section id="importOnBaseRecordSection">
         <% doctypes = onbase_document_doctype_options(@parent_type) %>
         <% if doctypes.length > 1 %>
-          <%= form.label_and_select "name", doctypes, :required => true %>
+          <%= form.label_and_select "document_type", doctypes, :required => true %>
 
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="onbase_document_file_">File to Import</label>

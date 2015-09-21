@@ -28,7 +28,7 @@ class ArchivesSpaceService < Sinatra::Base
     onbase_id = SecureRandom.hex
 
     obj = OnbaseDocument.create_from_json(JSONModel(:onbase_document).from_hash(:onbase_id => onbase_id,
-                                                                                :name => params[:document_type]), {})
+                                                                                :document_type => params[:document_type]), {})
 
     json_response(OnbaseDocument.to_jsonmodel(obj))
   end

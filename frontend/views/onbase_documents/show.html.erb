@@ -1,4 +1,4 @@
-<%= setup_context :object => @onbase_document, :title => @onbase_document.name %>
+<%= setup_context :object => @onbase_document, :title => @onbase_document.display_string %>
 
 <div class="row">
    <div class="col-md-3">
@@ -8,7 +8,7 @@
     <%= render_aspace_partial :partial => "toolbar" %>
     <div class="record-pane">
      <%= readonly_context :onbase_document, @onbase_document do |readonly| %>
-      <h2><%= @onbase_document.name %>  <span class="label label-info"><%= I18n.t("onbase_document._singular") %></span></h2>
+      <h2><%= @onbase_document.display_string %>  <span class="label label-info"><%= I18n.t("onbase_document._singular") %></span></h2>
 
       <%= render_aspace_partial :partial => "shared/flash_messages" %>
 
@@ -16,7 +16,7 @@
         <section id="basic_information">
 
           <%= form.label_and_textfield "onbase_id" %>
-          <%= form.label_and_textfield "name" %>
+          <%= form.label_and_textfield "document_type" %>
           <%= form.label_and_textfield "keywords" %>
 
           <%= display_audit_info(@onbase_document) %>

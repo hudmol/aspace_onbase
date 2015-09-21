@@ -10,7 +10,7 @@ Sequel.migration do
       Integer :json_schema_version, :null => false
 
       String :onbase_id, :null => false
-      String :name, :null => false
+      String :document_type, :null => false
       TextField :keywords
 
       apply_mtime_columns

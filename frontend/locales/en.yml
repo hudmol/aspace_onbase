@@ -9,7 +9,7 @@ en:
       _plural: OnBase Documents
       _singular: OnBase Document
       onbase_id: OnBase ID
-      name: Name
+      document_type: Document Type
       keywords: Keywords
       _frontend:
         action:

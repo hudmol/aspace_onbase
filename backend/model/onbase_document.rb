@@ -5,7 +5,7 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
   set_model_scope :global
 
   def display_string
-    "#{name} [#{onbase_id}]"
+    "#{document_type} [#{onbase_id}]"
   end
 
   def self.sequel_to_jsonmodel(objs, opts = {})

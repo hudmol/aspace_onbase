@@ -37,8 +37,7 @@ class DocumentKeywordsGenerator
     # containing_jsonmodel
     $stderr.puts("\n*** DEBUG #{(Time.now.to_f * 1000).to_i} [document_keywords_generator.rb:36 6e43d9]: " + {'containing_jsonmodel' => containing_jsonmodel}.inspect + "\n")
 
-    # FIXME: rename 'name' to 'document_type'
-    fields_to_generate = definitions.definitions_for_document_type(onbase_document['name']).
+    fields_to_generate = definitions.definitions_for_document_type(onbase_document['document_type']).
                          select {|field| field[:type] == "generated"}
 
     keywords = fields_to_generate.map {|field|

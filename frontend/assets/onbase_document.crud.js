@@ -63,7 +63,7 @@ OnBaseRecordForm.prototype.setupForm = function() {
     }
   });
 
-  self.$form.find("#onbase_document_name_").on("change", function() {
+  self.$form.find("#onbase_document_document_type_").on("change", function() {
     self.$container.find("#onBaseKeywords").load(self.keywordsFormURL, {doctype: $(this).val()});
   });
 };
@@ -102,7 +102,7 @@ OnBaseRecordLinker.prototype.openUploadModal = function(formUrl) {
     var $display = $("<dl>");
     $display.append($("<dt>").html("URI"));
     $display.append($("<dd>").html(json.uri));
-    $display.append($("<dt>").html("Name"));
+    $display.append($("<dt>").html("Document"));
     $display.append($("<dd>").html(json.display_string));
     $display.append($("<dt>").html("JSON"));
     $display.append($("<dd>").html(JSON.stringify(json)));

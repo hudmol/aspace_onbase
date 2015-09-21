@@ -1,10 +1,11 @@
-<%= render_aspace_partial :partial => "shared/form_messages", :locals => {:object => @onbase_document, :form => form} %>
-
 <%
   onBaseImportRequired = form.obj["onbase_id"].blank?
 %>
 
 <fieldset id="onbaseDocumentFormFields" data-upload-url="<%= url_for :controller => :onbase_documents, :action => :upload %>" data-keywords-form-url="<%= url_for :controller => :onbase_documents, :action => :keywords_form %>">
+
+  <div class="onbase-upload-errors alert alert-danger" tabindex="-1" style="display:none"></div>
+
   <% define_template "onbase_document", jsonmodel_definition(:onbase_document) do |form| %>
     <% if onBaseImportRequired %>
       <section id="importOnBaseRecordSection">
@@ -25,6 +26,8 @@
             There are no OnBase document types defined for this record: <%= @parent_type %>
           </div>
         <% end %>
+
+        <br/>
         <div id="importOnBaseRecordProgress" class="progress">
             <div class="progress-bar" style="width:1%"></div>
         </div>

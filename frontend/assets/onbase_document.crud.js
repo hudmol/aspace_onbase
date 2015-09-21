@@ -12,6 +12,25 @@ function OnBaseRecordForm($container, onFormUpload) {
   this.setupForm();
 };
 
+
+OnBaseRecordForm.prototype.clearErrorMessages = function() {
+  this.$container.find(".onbase-upload-errors").empty().hide();
+};
+
+
+OnBaseRecordForm.prototype.renderErrorMessage = function(errors) {
+  this.clearErrorMessages();
+  var $errors = this.$container.find(".onbase-upload-errors");
+  $errors.show();
+
+  $.each(errors, function(_, error) {
+    $errors.append($("<div>").html(error));
+  });
+
+  $errors.focus();
+};
+
+
 OnBaseRecordForm.prototype.setupForm = function() {
   var self = this;
 
@@ -20,6 +39,7 @@ OnBaseRecordForm.prototype.setupForm = function() {
 
     beforeSubmit: function(arr, $form, options) {
       self.$progress.show();
+      self.clearErrorMessages();
     },
     uploadProgress: function(event, position, total, percentComplete) {
       var percentVal = percentComplete + '%';
@@ -33,8 +53,13 @@ OnBaseRecordForm.prototype.setupForm = function() {
 
       self.onFormUpload(json);
     },
-    error: function(xhr) {
-      alert("error");
+    error: function(jqXHR, textStatus, errorThrown) {
+      self.$progressBar.addClass("progress-bar-danger");
+      if (jqXHR.responseJSON) {
+        self.renderErrorMessage(jqXHR.responseJSON);
+      } else {
+        alert("Error uploading OnBase Document: " + errorThrown);
+      }
     }
   });
 

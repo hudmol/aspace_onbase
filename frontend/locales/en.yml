@@ -18,6 +18,9 @@ en:
           create: Create an OnBase Document
         messages:
           updated: OnBase Document Saved
+          document_type_required: Document Type is required
+          file_required: File to Import is required
+          keyword_required: Keyword "%{code}" is required
     onbase_document_keyword:
       record_id: Record ID
       agent_id: Agent ID

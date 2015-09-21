@@ -30,6 +30,25 @@ class OnbaseDocumentsController < ApplicationController
 
   def create
     file = params[:onbase_document][:file]
+    keywords = params[:keywords] || {}
+    document_type = params[:onbase_document][:name]
+
+    errors = []
+
+    errors << I18n.t("plugins.onbase_document._frontend.messages.file_required") if file.blank?
+
+    if document_type.blank?
+      errors << I18n.t("plugins.onbase_document._frontend.messages.document_type_required")
+    else
+      errors << validate_keywords(document_type, keywords)
+    end
+
+    errors.flatten!
+
+    if !errors.empty?
+      return render :json => errors, :status => 500
+    end
+
 
     File.open(file.tempfile) do |fh|
       response = JSONModel::HTTP.post_form("/onbase_upload",
@@ -83,6 +102,25 @@ class OnbaseDocumentsController < ApplicationController
   def onbase_document_doctype_options(record_type)
     definitions = DocumentKeywordDefinitions.new
     [""] + definitions.document_types_for_record(record_type).keys
+  end
+
+
+  def validate_keywords(doctype, keywords)
+    errors = []
+
+    definitions = DocumentKeywordDefinitions.new
+
+    definitions.definitions_for_document_type(doctype).each do |field|
+      if field[:type] != "generated"
+        value = keywords[field[:code]]
+
+        if value.blank?
+          errors << I18n.t("plugins.onbase_document._frontend.messages.keyword_required", :code => I18n.t("plugins.onbase_document_keyword.#{field[:code]}"))
+        end
+      end
+    end
+
+    errors
   end
 
 end

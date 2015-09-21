@@ -54,7 +54,8 @@ class OnbaseDocumentsController < ApplicationController
       response = JSONModel::HTTP.post_form("/onbase_upload",
                                            {
                                              'file' => UploadIO.new(fh, file.content_type, file.original_filename),
-                                             'document_type' => params[:onbase_document][:document_type]
+                                             'document_type' => params[:onbase_document][:document_type],
+                                             'keywords' => keywords
                                            },
                                            :multipart_form_data)
 

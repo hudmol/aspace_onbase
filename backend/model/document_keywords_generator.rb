@@ -12,7 +12,9 @@ class DocumentKeywordsGenerator
     :current_date => proc {|record| Keyword.new("Date", Date.today.iso8601) },
     :event_date => proc {|record| Keyword.new("Date", format_date(record)) },
     :event_id => proc {|record| Keyword.new("Event ID", record['uri'])},
-    :record_id => proc {|record| Keyword.new("Record ID", record['linked_records'].map {|linked| linked['ref']}) },
+    :record_id => proc {|record| Keyword.new("Record ID", record['linked_records'].map {|linked| linked['ref']}.join("; ")) },
+    :agent_id => proc {|record| Keyword.new("Agent ID", Array(record['linked_agents']).map {|agent| agent['ref']}.join("; ")) },
+    :record_identifier => proc {|record| Keyword.new("Record Identifier", record['linked_records'].map {|linked| format_identifier(linked['_resolved'])}.join("; ")) },
   }
 
 
@@ -64,6 +66,13 @@ class DocumentKeywordsGenerator
         date['expression']
       end
     end
+  end
+
+  def format_identifier(record)
+    record['ref_id'] ||
+      record['component_id'] ||
+        record['id_0'] && Identifers.format((0...4).map {|i| record['_resolved']["id_#{i}"]})
+          record['uri']
   end
 
 end

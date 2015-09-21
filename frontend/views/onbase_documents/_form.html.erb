@@ -4,29 +4,33 @@
   onBaseImportRequired = form.obj["onbase_id"].blank?
 %>
 
-<fieldset id="onbaseDocumentFormFields" data-upload-url="<%= url_for :controller => :onbase_documents, :action => :upload %>">
+<fieldset id="onbaseDocumentFormFields" data-upload-url="<%= url_for :controller => :onbase_documents, :action => :upload %>" data-keywords-form-url="<%= url_for :controller => :onbase_documents, :action => :keywords_form %>">
   <% define_template "onbase_document", jsonmodel_definition(:onbase_document) do |form| %>
     <% if onBaseImportRequired %>
       <section id="importOnBaseRecordSection">
-        <h3>Import OnBase Record</h3>
+        <% doctypes = onbase_document_doctype_options(@parent_type) %>
+        <% if doctypes.length > 1 %>
+          <%= form.label_and_select "name", doctypes, :required => true %>
 
-        <%= form.label_and_select "name", form.possible_options_for("name", true), :required => true %>
-
-        <div class="form-group required">
-          <label class="col-sm-2 control-label" for="onbase_document_file_">File to Import</label>
-          <div class="col-sm-9">
-            <input class="form-control" id="onbase_document_file_" name="onbase_document[file]" type="file" value="">
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="onbase_document_file_">File to Import</label>
+            <div class="col-sm-9">
+              <input class="form-control" id="onbase_document_file_" name="onbase_document[file]" type="file" value="">
+            </div>
           </div>
-        </div>
 
+          <section id="onBaseKeywords"></section>
+        <% else %>
+          <div class="alert alert-danger">
+            There are no OnBase document types defined for this record: <%= @parent_type %>
+          </div>
+        <% end %>
         <div id="importOnBaseRecordProgress" class="progress">
             <div class="progress-bar" style="width:1%"></div>
         </div>
       </section>
     <% else %>
       <section id="onBaseRecordDetails">
-        <h3>OnBase Record Details</h3>
-
         <p>TODO</p>
         <%# form.label_and_readonly "onbase_id", "Document Import Required" %>
         <%# form.label_and_textfield "name", {:field_opts => {:disabled => onBaseImportRequired}} %>

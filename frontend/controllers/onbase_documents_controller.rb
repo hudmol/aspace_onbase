@@ -2,7 +2,7 @@ class OnbaseDocumentsController < ApplicationController
 
   # FIXME: use proper permission here
   set_access_control  "view_repository" => [:index, :show],
-                      "manage_repository" => [:new, :edit, :create, :update, :merge, :delete]
+                      "manage_repository" => [:new, :edit, :create, :update, :merge, :delete, :keywords_form]
 
 
 
@@ -17,6 +17,7 @@ class OnbaseDocumentsController < ApplicationController
 
   def new
     @onbase_document = JSONModel(:onbase_document).new._always_valid!
+    @parent_type = params[:parent_type].intern
 
     raise "Can only create an OnBase document from within the context of another record" if !inline?
 
@@ -59,6 +60,29 @@ class OnbaseDocumentsController < ApplicationController
 
     flash[:success] = I18n.t("plugins.onbase_document._frontend.messages.deleted", JSONModelI18nWrapper.new(:onbase_document => onbase_document))
     redirect_to(:controller => :onbase_documents, :action => :index, :deleted_uri => onbase_document.uri)
+  end
+
+
+  def keywords_form
+    definitions = DocumentKeywordDefinitions.new
+    @doctype = params[:doctype]
+
+    if @doctype.blank?
+      return render :text => ""
+    end
+
+    @definition = definitions.definitions_for_document_type(@doctype)
+
+    render_aspace_partial :partial => "onbase_documents/keywords_form"
+  end
+
+
+  private
+
+  helper_method :onbase_document_doctype_options
+  def onbase_document_doctype_options(record_type)
+    definitions = DocumentKeywordDefinitions.new
+    [""] + definitions.document_types_for_record(record_type).keys
   end
 
 end

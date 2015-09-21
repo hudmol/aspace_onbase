@@ -7,7 +7,7 @@
     "properties" => {
       "uri" => {"type" => "string", "required" => false},
       "onbase_id" => {"type" => "string", "maxLength" => 255, "ifmissing" => "error"},
-      "name" => {"type" => "string", "ifmissing" => "error", "dynamic_enum" => "onbase_document_type"},
+      "name" => {"type" => "string", "ifmissing" => "error"},
       "keywords" => {"type" => "string"},
       "display_string" => {"type" => "string", "readonly" => "true"},
     },

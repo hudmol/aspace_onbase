@@ -1,13 +1,27 @@
 <% define_template("onbase_document", jsonmodel_definition(:onbase_document)) do |form| %>
-  <div class="subrecord-form-fields">
-    <%= render_aspace_partial :partial => "onbase_documents/linker", :locals => { :form => form }%>
+  <div class="subrecord-form-fields onbase-document-container">
 
-    <div id="aspace_onbase_upload_template"><!--
-      <div class="modal-body upload-onbase-document-container"></div>
-      <div class="modal-footer">
-        <button id="uploadAndLinkOnBaseDocumentButton" class="btn btn-primary">Upload and Link to OnBase Document</button>
-        <button class="btn btn-cancel btn-default" data-dismiss="modal"><%= I18n.t "actions.cancel" %></button>
+    <%= form.hidden_input("ref", form.obj["ref"], {:class => "onbasedocument-ref"}) %>
+
+    <% if form.obj["ref"].blank? %>
+      <div class="form-group">
+        <div class="col-md-offset-2">
+          <a href="javascript:void(0);" data-target="<%= url_for :controller => :onbase_documents, :action => :new, :inline => true, :parent_type => form.obj["jsonmodel_type"] %>" class="btn btn-success upload-onbase-document-btn col-md-4">Upload</a>
+        </div>
       </div>
-    --></div>
+
+      <div id="aspace_onbase_upload_template"><!--
+        <div class="modal-body upload-onbase-document-container"></div>
+        <div class="modal-footer">
+          <button id="uploadAndLinkOnBaseDocumentButton" class="btn btn-primary">Upload and Link to OnBase Document</button>
+          <button class="btn btn-cancel btn-default" data-dismiss="modal"><%= I18n.t "actions.cancel" %></button>
+        </div>
+      --></div>
+    <% else %>
+      <dl>
+        <dt>URI</dt>
+        <dd><%= form.obj["ref"] %></dd>
+      </dl>
+    <% end %>
   </div>
 <% end %>

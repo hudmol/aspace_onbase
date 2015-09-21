@@ -18,5 +18,16 @@ en:
           create: Create an OnBase Document
         messages:
           updated: OnBase Document Saved
+    onbase_document_keyword:
+      record_id: Record ID
+      agent_id: Agent ID
+      agent_name: Agent Name
+      record_identifier: Record Identifier
+      accession_id: Accession ID
+      event_id: Event ID
+      event_date: Event Date
+      current_date: Current Date
+      conservation_number: Conservation Number
+      catalog_location: Catalog Location
   onbase_document:
     <<: *onbase_document_attributes

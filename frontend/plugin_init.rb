@@ -1,6 +1,8 @@
 my_routes = [File.join(File.dirname(__FILE__), "routes.rb")]
 ArchivesSpace::Application.config.paths['config/routes'].concat(my_routes)
 
+require_relative "../lib/document_keyword_definitions"
+
 Rails.application.config.after_initialize do
 
   ActionView::PartialRenderer.class_eval do

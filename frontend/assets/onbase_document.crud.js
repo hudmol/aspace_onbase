@@ -4,6 +4,8 @@ function OnBaseRecordForm($container, onFormUpload) {
 
   this.onFormUpload = onFormUpload;
 
+  this.keywordsFormURL = $container.data("keywordsFormUrl");
+
   this.$progress = this.$container.find("#importOnBaseRecordProgress").hide();
   this.$progressBar = $(".progress-bar", this.$progress)
 
@@ -35,11 +37,14 @@ OnBaseRecordForm.prototype.setupForm = function() {
       alert("error");
     }
   });
+
+  self.$form.find("#onbase_document_name_").on("change", function() {
+    self.$container.find("#onBaseKeywords").load(self.keywordsFormURL, {doctype: $(this).val()});
+  });
 };
 
 
-function OnBaseRecordLinker($linker, $container) {
-  this.$linker = $linker;
+function OnBaseRecordLinker($container) {
   this.$container = $container;
 
   this.setupUploadAction();
@@ -69,13 +74,18 @@ OnBaseRecordLinker.prototype.openUploadModal = function(formUrl) {
   };
 
   function onFormUpload(json) {
-    self.$linker.tokenInput("add", {
-      id: json.uri,
-      name: json.display_string,
-      json: json
-    });
+    var $display = $("<dl>");
+    $display.append($("<dt>").html("URI"));
+    $display.append($("<dd>").html(json.uri));
+    $display.append($("<dt>").html("Name"));
+    $display.append($("<dd>").html(json.display_string));
+    $display.append($("<dt>").html("JSON"));
+    $display.append($("<dd>").html(JSON.stringify(json)));
 
-    self.$linker.triggerHandler("change");
+    self.$container.find(".form-group").html($display);
+
+    self.$container.find(":input.onbasedocument-ref").val(json.uri);
+
     $modal.modal("hide");
   };
 
@@ -89,6 +99,6 @@ OnBaseRecordLinker.prototype.openUploadModal = function(formUrl) {
 
 $(document).bind("subrecordcreated.aspace", function(event, object_name, subform) {
   if (object_name === "onbase_document") {
-    new OnBaseRecordLinker(subform.find(".linker"), subform);
+    new OnBaseRecordLinker(subform.find(".onbase-document-container"));
   }
 });

@@ -140,7 +140,7 @@ class DocumentKeywordDefinitions
   }
 
   def document_types_for_record(record_type)
-    DOCUMENT_TYPE_DEFINITIONS.find {|definition| definition[:supported_records].include?(record_type)}
+    DOCUMENT_TYPE_DEFINITIONS.select {|doctype, definition | definition[:supported_records].include?(record_type)}
   end
 
   def definitions_for_document_type(document_type)

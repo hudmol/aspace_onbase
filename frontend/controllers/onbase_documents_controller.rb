@@ -1,7 +1,7 @@
 class OnbaseDocumentsController < ApplicationController
 
   # FIXME: use proper permission here
-  set_access_control  "view_repository" => [:index, :show],
+  set_access_control  "view_repository" => [:index, :show, :download],
                       "manage_repository" => [:new, :edit, :create, :update, :merge, :delete, :keywords_form]
 
 
@@ -94,6 +94,11 @@ class OnbaseDocumentsController < ApplicationController
     @definition = definitions.definitions_for_document_type(@doctype)
 
     render_aspace_partial :partial => "onbase_documents/keywords_form"
+  end
+
+
+  def download
+    render :text => "DOING THINGS"
   end
 
 

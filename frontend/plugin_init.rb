@@ -20,4 +20,17 @@ Rails.application.config.after_initialize do
     end
   end
 
+
+  ApplicationController.class_eval do
+
+    alias_method :find_opts_pre_aspace_onbase, :find_opts
+
+    def find_opts
+      orig = find_opts_pre_aspace_onbase
+      orig.merge('resolve[]' => orig['resolve[]'] + ['onbase_documents'])
+    end
+
+  end
+
+
 end

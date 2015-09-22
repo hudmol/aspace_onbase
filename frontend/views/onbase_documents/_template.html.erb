@@ -1,19 +1,34 @@
+<% define_template("onbase_document_readonly", jsonmodel_definition(:onbase_document)) do |form| %>
+  <%= form.hidden_input("ref", form.obj["ref"] || "${ref}", {:class => "onbasedocument-ref"}) %>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Document Type</label>
+    <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["document_type"] : "${_resolved.document_type}" %></div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">OnBase ID</label>
+    <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["onbase_id"] : "${_resolved.onbase_id}" %></div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label"></label>
+    <div class="col-sm-9 label-only">
+      <% onbase_document_id = form.obj["ref"] ? JSONModel(:onbase_document).id_for(form.obj["ref"]) : "${_resolved.id}" %>
+      <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, {:controller => :onbase_documents, :action => :download, :id => onbase_document_id}, {:class => "btn btn-default col-sm-4"} %>
+    </div>
+  </div>
+<% end %>
+
 <% define_template("onbase_document", jsonmodel_definition(:onbase_document)) do |form| %>
   <div class="subrecord-form-fields onbase-document-container">
-    <%= form.hidden_input("ref", form.obj["ref"], {:class => "onbasedocument-ref"}) %>
-
     <% if form.obj["ref"].blank? %>
       <div class="form-group">
-        <div class="col-md-offset-2">
+        <div class="col-sm-2 control-label"></div>
+        <div class="col-sm-9">
           <% parent_type = form.obj["jsonmodel_type"] || form.parent_context %>
-          <a href="javascript:void(0);" data-target="<%= url_for :controller => :onbase_documents, :action => :new, :inline => true, :parent_type => parent_type %>" class="btn btn-success upload-onbase-document-btn col-md-4">Upload</a>
+          <a href="javascript:void(0);" data-target="<%= url_for :controller => :onbase_documents, :action => :new, :inline => true, :parent_type => parent_type %>" class="btn btn-success upload-onbase-document-btn col-sm-4"><span class="glyphicon glyphicon-upload"></span> Upload Document</a>
         </div>
       </div>
     <% else %>
-      <dl>
-        <dt>URI</dt>
-        <dd><%= form.obj["ref"] %></dd>
-      </dl>
+      <% form.emit_template "onbase_document_readonly" %>
     <% end %>
   </div>
 <% end %>
@@ -23,5 +38,22 @@
   <div class="modal-footer">
     <button id="uploadAndLinkOnBaseDocumentButton" class="btn btn-primary">Upload and Link to OnBase Document</button>
     <button class="btn btn-cancel btn-default" data-dismiss="modal"><%= I18n.t "actions.cancel" %></button>
+  </div>
+--></div>
+
+<div id="aspace_onbase_uploaded_template"><!--
+  <div class="form-group">
+    <label class="col-sm-2 control-label"></label>
+    <div class="col-sm-9 label-only">
+      <%# link_for "Download Document", {:controller => :onbase_documents, :action => :download, :id => "${id}"}, {:class => "btn btn-default"} %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">OnBase ID</label>
+    <div class="col-sm-9 label-only">${onbase_id}</div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Document Type</label>
+    <div class="col-sm-9 label-only">${document_type}</div>
   </div>
 --></div>

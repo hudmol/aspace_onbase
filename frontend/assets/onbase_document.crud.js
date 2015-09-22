@@ -99,17 +99,17 @@ OnBaseRecordLinker.prototype.openUploadModal = function(formUrl) {
   };
 
   function onFormUpload(json) {
-    var $display = $("<dl>");
-    $display.append($("<dt>").html("URI"));
-    $display.append($("<dd>").html(json.uri));
-    $display.append($("<dt>").html("Document"));
-    $display.append($("<dd>").html(json.display_string));
-    $display.append($("<dt>").html("JSON"));
-    $display.append($("<dd>").html(JSON.stringify(json)));
+    var index = this.$container.closest("ul").find("li").length + 1;
+    var data = {
+      "ref": json['uri'],
+      "_resolved": json,
+      "id_path": AS.quickTemplate(this.$container.closest("[data-id-path]").data("id-path"), {index: index}),
+      "path": AS.quickTemplate(this.$container.closest("[data-name-path]").data("name-path"), {index: index}),
+      "index": index
+    };
+    var $readonlyView = AS.renderTemplate("template_onbase_document_readonly", data);
 
-    self.$container.find(".form-group").html($display);
-
-    self.$container.find(":input.onbasedocument-ref").val(json.uri);
+    this.$container.find(".form-group").replaceWith($readonlyView);
 
     $modal.modal("hide");
   };

@@ -7,14 +7,14 @@ class DocumentKeywordsGenerator
 
 
   GENERATORS = {
-    :accession_id => proc {|record| Keyword.new("Accession ID", record.uri)},
+    :accession_id => proc {|record| Keyword.new("Accession ID", record['uri'])},
     :agent_name => proc {|record| Keyword.new("Agent Name", Array(record['linked_agents']).map {|agent| agent['_resolved']['title']}.join("; "))},
     :current_date => proc {|record| Keyword.new("Date", Date.today.iso8601) },
     :event_date => proc {|record| Keyword.new("Date", format_date(record)) },
     :event_id => proc {|record| Keyword.new("Event ID", record['uri'])},
-    :record_id => proc {|record| Keyword.new("Record ID", record['linked_records'].map {|linked| linked['ref']}.join("; ")) },
+    :record_id => proc {|record| Keyword.new("Record ID", Array(record['linked_records']).map {|linked| linked['ref']}.join("; ")) },
     :agent_id => proc {|record| Keyword.new("Agent ID", Array(record['linked_agents']).map {|agent| agent['ref']}.join("; ")) },
-    :record_identifier => proc {|record| Keyword.new("Record Identifier", record['linked_records'].map {|linked| format_identifier(linked['_resolved'])}.join("; ")) },
+    :record_identifier => proc {|record| Keyword.new("Record Identifier", Array(record['linked_records']).map {|linked| format_identifier(linked['_resolved'])}.join("; ")) },
   }
 
 

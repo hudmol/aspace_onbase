@@ -27,8 +27,8 @@ module OnbaseDocuments
 
           keywords = generator.keywords_for(created_record, onbase_document)
 
-          # magic!
-          # ...
+          # Create a pending job for setting keywords and run it immediately
+          OnbaseKeywordJob.create(onbase_document, keywords, RequestContext.get(:current_username)).execute
         end
       end
 

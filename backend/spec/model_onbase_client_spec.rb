@@ -16,7 +16,7 @@ describe 'Onbase Client model' do
 
     stub_request(:get, "me:reallyme@onbase-dev.dartmouth.edu:443/api/OWMROBIInstance/api/documents/999")
 
-    opts = {}
+    opts = {:user => "testuser"}
     client = OnbaseClient.new(opts)
 
     up_file = File.new(__FILE__, 'r')

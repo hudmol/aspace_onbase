@@ -8,3 +8,9 @@ Permission.define("delete_onbase_record",
 
 
 require_relative "../lib/document_keyword_definitions"
+
+ArchivesSpaceService.settings.scheduler.every('10s') do
+  $stderr.puts("RUNNING JOB")
+  OnbaseKeywordJob.process_jobs
+end
+

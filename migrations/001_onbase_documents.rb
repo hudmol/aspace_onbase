@@ -11,7 +11,6 @@ Sequel.migration do
 
       String :onbase_id, :null => false
       String :document_type, :null => false
-      TextField :keywords
 
       apply_mtime_columns
     end

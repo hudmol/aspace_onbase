@@ -25,9 +25,9 @@ class ArchivesSpaceService < Sinatra::Base
     file = params[:file]
     keywords = ASUtils.json_parse(params[:keywords] || "{}")
 
-    p client.upload(file.tempfile, file.original_filename, file.content_type, params[:document_type], keywords)
+    upload_response = client.upload(file.tempfile, file.filename, file.type, params[:document_type], keywords)
 
-    onbase_id = SecureRandom.hex
+    onbase_id = upload_response["documentId"].to_s
 
     obj = OnbaseDocument.create_from_json(JSONModel(:onbase_document).from_hash(:onbase_id => onbase_id,
                                                                                 :document_type => params[:document_type]), {})

@@ -137,6 +137,14 @@ class DocumentKeywordDefinitions
         {:type => "generated", :code => :agent_name},
         {:type => "generated", :code => :event_id},
       ]},
+
+    "SPCL - Example Document Type" => {
+      :supported_records => [:event, :accession],
+      :fields => [
+        {:type => "text", :code => "SPCL-ExampleAlpha20"},
+        {:type => "generated", :code => "SPCL-ExampleAlpha250"}
+      ]
+    }
   }
 
   def document_types_for_record(record_type)

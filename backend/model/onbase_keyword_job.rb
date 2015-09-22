@@ -3,10 +3,11 @@ class OnbaseKeywordJob < Sequel::Model(:onbase_keyword_job)
   JOB_RETRY_TIME = 120
 
   def self.create(onbase_document, keywords, user)
-    super(:onbase_id => onbase_document.id,
+    super(:onbase_id => onbase_document.onbase_id,
           :keywords => keywords.to_json,
           :status => "new",
-          :user => user)
+          :user => user,
+          :system_mtime => Time.now)
   end
 
   def self.process_jobs
@@ -32,9 +33,11 @@ class OnbaseKeywordJob < Sequel::Model(:onbase_keyword_job)
 
   def upload_keywords
     # HTTP
-    client = OnbaseClient.new(:user => job.user)
+    client = OnbaseClient.new(:user => user)
 
-    client.add_to_keywords(job.id, ASUtils.json_parse(job.keywords))
+    client.add_to_keywords(onbase_id, ASUtils.json_parse(keywords))
+
+    self.update(:status => "done", :system_mtime => Time.now)
   end
 
 

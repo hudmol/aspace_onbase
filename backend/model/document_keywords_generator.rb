@@ -3,7 +3,13 @@ require 'date'
 # FIXME: Do a sanity check on startup to make sure generators aren't missing
 class DocumentKeywordsGenerator
 
-  Keyword = Struct.new(:label, :keyword)
+  Keyword = Struct.new(:label, :keyword) do
+    def to_json(_)
+      {
+        label => keyword
+      }.to_json
+    end
+  end
 
 
   GENERATORS = {
@@ -15,6 +21,7 @@ class DocumentKeywordsGenerator
     :record_id => proc {|record| Keyword.new("Record ID", Array(record['linked_records']).map {|linked| linked['ref']}.join("; ")) },
     :agent_id => proc {|record| Keyword.new("Agent ID", Array(record['linked_agents']).map {|agent| agent['ref']}.join("; ")) },
     :record_identifier => proc {|record| Keyword.new("Record Identifier", Array(record['linked_records']).map {|linked| format_identifier(linked['_resolved'])}.join("; ")) },
+    "SPCL-ExampleAlpha250" => proc {|record|  Keyword.new("SPCL-ExampleAlpha250", record['uri'])},
   }
 
 

@@ -1,16 +1,26 @@
-function OnBaseRecordForm($container, onFormUpload) {
+function OnBaseRecordForm($container, options) {
+  this.options = $.extend({}, this.defaults(), options);
+
   this.$container = $container;
   this.$form = $container.closest("form");
-
-  this.onFormUpload = onFormUpload;
 
   this.keywordsFormURL = $container.data("keywordsFormUrl");
 
   this.$progress = this.$container.find("#importOnBaseRecordProgress").hide();
   this.$progressBar = $(".progress-bar", this.$progress)
+  this.$log = this.$container.find("#importOnBaseLog");
 
   this.setupForm();
 };
+
+
+OnBaseRecordForm.prototype.defaults = function() {
+  return {
+    onSuccess: $.noop,
+    onSubmit: $.noop,
+    onComplete: $.noop
+  };
+}
 
 
 OnBaseRecordForm.prototype.clearErrorMessages = function() {
@@ -34,32 +44,72 @@ OnBaseRecordForm.prototype.renderErrorMessage = function(errors) {
 OnBaseRecordForm.prototype.setupForm = function() {
   var self = this;
 
+  function disableForm() {
+    self.$form.find(":input").prop("disabled", true);
+  };
+
+  function enableForm() {
+    self.$form.find(":input").prop("disabled", false);
+  };
+
+  var progressInterval;
+
   self.$form.ajaxForm({
     type: "POST",
 
     beforeSubmit: function(arr, $form, options) {
       self.$progress.show();
       self.clearErrorMessages();
+      self.$log.show();
+      self.$log.find(".import-onbase-step").hide();
+      self.$progressBar.removeClass("progress-bar-danger");
+      self.$progressBar.width("1%");
+      self.$log.find(".step-1").show();
+      self.options.onSubmit();
+
+      progressInterval = setInterval(function() {
+        if (self.$log.find(".step-3").is(":visible")) {
+          self.$log.find(".step-3").append(".");
+        } else if (self.$log.find(".step-1").is(":visible")) {
+          self.$log.find(".step-1").append(".");
+        }
+      }, 2000);
     },
     uploadProgress: function(event, position, total, percentComplete) {
       var percentVal = percentComplete + '%';
       self.$progressBar.width(percentVal);
+
+      if (percentComplete == 100) {
+        self.$log.find(".step-2").show();
+        self.$log.find(".step-3").show();
+      }
+
+      disableForm();
     },
     success: function(json, status, xhr) {
       var percentVal = '100%';
-      self.$progressBar.width(percentVal)
+      self.$progressBar.width(percentVal);
       self.$progress.removeClass("active").removeClass("progress-striped");
+
       self.$progressBar.addClass("progress-bar-success");
 
-      self.onFormUpload(json);
+      self.$log.find(".step-4").show();
+
+      self.options.onSuccess(json);
     },
     error: function(jqXHR, textStatus, errorThrown) {
       self.$progressBar.addClass("progress-bar-danger");
+      self.$log.find(".step-error").show();
       if (jqXHR.responseJSON) {
         self.renderErrorMessage(jqXHR.responseJSON);
       } else {
-        alert("Error uploading OnBase Document: " + errorThrown);
+        self.renderErrorMessage(["Error uploading OnBase Document: " + errorThrown]);
       }
+      enableForm();
+    },
+    complete: function() {
+      self.options.onComplete();
+      clearInterval(progressInterval);
     }
   });
 
@@ -91,14 +141,26 @@ OnBaseRecordLinker.prototype.openUploadModal = function(formUrl) {
   function setupUploadForm(html) {
     $modal.find(".upload-onbase-document-container").html(html);
 
-    $modal.on("click", "#uploadAndLinkOnBaseDocumentButton", function() {
+    $modal.on("click", "#uploadAndLinkOnBaseDocumentButton", function () {
       $modal.find("form").submit();
     });
 
-    new OnBaseRecordForm($modal.find("#onbaseDocumentFormFields"), $.proxy(onFormUpload, self));
+    new OnBaseRecordForm($modal.find("#onbaseDocumentFormFields"), {
+      onSuccess: $.proxy(onSuccess, self),
+      onSubmit: $.proxy(onSubmit, self),
+      onComplete: $.proxy(onComplete, self)
+    });
   };
 
-  function onFormUpload(json) {
+  function onSubmit() {
+    $modal.find(".btn").prop("disabled", true);
+  };
+
+  function onComplete() {
+    $modal.find(".btn").prop("disabled", false);
+  };
+
+  function onSuccess(json) {
     var index = this.$container.closest("ul").find("li").length + 1;
     var data = {
       "ref": json['uri'],

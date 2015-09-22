@@ -31,13 +31,21 @@
         <div id="importOnBaseRecordProgress" class="progress">
             <div class="progress-bar" style="width:1%"></div>
         </div>
+
+        <div id="importOnBaseLog" class="alert alert-info" style="display:none">
+          <div>
+            <span class="import-onbase-step step-1" style="display:none">Transferring file...</span> <span class="import-onbase-step step-2 text-success" style="display:none">Transferred!</span>
+          </div>
+          <div>
+            <span class="import-onbase-step step-3" style="display:none">Posting to the OnBase Service...</span> <span class="import-onbase-step step-4 text-success" style="display:none">Done!</span>
+          </div>
+
+          <div class="import-onbase-step step-error text-danger" style="display:none">Error -- see message above.</div>
+        </div>
       </section>
     <% else %>
       <section id="onBaseRecordDetails">
-        <p>TODO</p>
-        <%# form.label_and_readonly "onbase_id", "Document Import Required" %>
-        <%# form.label_and_textfield "name", {:field_opts => {:disabled => onBaseImportRequired}} %>
-        <%# form.label_and_textarea "keywords", {:field_opts => {:disabled => onBaseImportRequired}} %>
+        <p>TODO: Edit not currently supported</p>
       </section>
     <% end %>
     <%= form.hidden_input "onbase_id" %>

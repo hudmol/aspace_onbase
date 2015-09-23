@@ -3,14 +3,7 @@ require 'date'
 # FIXME: Do a sanity check on startup to make sure generators aren't missing
 class DocumentKeywordsGenerator
 
-  Keyword = Struct.new(:label, :keyword) do
-    def to_json(_)
-      {
-        label => keyword
-      }.to_json
-    end
-  end
-
+  Keyword = Struct.new(:label, :keyword)
 
   GENERATORS = {
     :accession_id => proc {|record| Keyword.new("Accession ID", record['uri'])},
@@ -47,8 +40,11 @@ class DocumentKeywordsGenerator
     fields_to_generate = definitions.definitions_for_document_type(onbase_document['document_type']).
                          select {|field| field[:type] == "generated"}
 
-    keywords = fields_to_generate.map {|field|
-      generator_for(field[:code]).call(containing_jsonmodel)
+    keywords = {}
+
+    fields_to_generate.each {|field|
+      keyword = generator_for(field[:code]).call(containing_jsonmodel)
+      keywords[keyword.label] = keyword.keyword
     }
 
     # keywords

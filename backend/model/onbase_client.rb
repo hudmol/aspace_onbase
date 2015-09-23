@@ -16,7 +16,7 @@ class OnbaseClient
     upload_url = url('', {"documentTypeName" => doc_type})
     req = Net::HTTP::Post::Multipart.new(upload_url.request_uri,
                                          "file" => UploadIO.new(file_stream, content_type, file_name),
-                                         "keywords" => {"keywords" => format_keywords(keywords).to_json})
+                                         "keywordData" => {"keywords" => format_keywords(keywords)}.to_json)
 
     req.basic_auth @username, @password
 
@@ -120,14 +120,12 @@ class OnbaseClient
 
 
   def format_keywords(keywords)
-    keywords.map do |pair|
-      pair.map do |name, value|
-        {
-          "keywordTypeName" => name,
-          "keywordValue" => value
-        }
-      end
-    end.flatten
+    keywords.map do |name, value|
+      {
+        "keywordTypeName" => name,
+        "keywordValue" => value
+      }
+    end
   end
 
 end

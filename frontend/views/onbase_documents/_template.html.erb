@@ -12,7 +12,7 @@
     <label class="col-sm-2 control-label"></label>
     <div class="col-sm-9 label-only">
       <% onbase_document_id = form.obj["ref"] ? JSONModel(:onbase_document).id_for(form.obj["ref"]) : "${_resolved.id}" %>
-      <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, {:controller => :onbase_documents, :action => :download, :id => onbase_document_id}, {:class => "btn btn-default col-sm-4"} %>
+      <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, {:controller => :onbase_documents, :action => :download, :id => onbase_document_id}, {:class => "btn btn-default col-sm-6"} %>
     </div>
   </div>
 <% end %>
@@ -24,7 +24,7 @@
         <div class="col-sm-2 control-label"></div>
         <div class="col-sm-9">
           <% parent_type = form.obj["jsonmodel_type"] || form.parent_context %>
-          <a href="javascript:void(0);" data-target="<%= url_for :controller => :onbase_documents, :action => :new, :inline => true, :parent_type => parent_type %>" class="btn btn-success upload-onbase-document-btn col-sm-4"><span class="glyphicon glyphicon-upload"></span> Upload Document</a>
+          <a href="javascript:void(0);" data-target="<%= url_for :controller => :onbase_documents, :action => :new, :inline => true, :parent_type => parent_type %>" class="btn btn-success upload-onbase-document-btn col-sm-6"><span class="glyphicon glyphicon-upload"></span> Upload Document</a>
         </div>
       </div>
     <% else %>

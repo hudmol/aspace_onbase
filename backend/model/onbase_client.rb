@@ -158,7 +158,10 @@ class OnbaseClient
   private
 
   def http_request(url)
-    Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') do |http|
+    Net::HTTP.start(url.host, url.port,
+                    :use_ssl => url.scheme == 'https',
+                    :read_timeout => 300,
+                    :open_timeout => 300) do |http|
       yield(http)
     end
   end

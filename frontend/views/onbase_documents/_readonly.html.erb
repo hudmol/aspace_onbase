@@ -12,7 +12,7 @@
     <label class="col-sm-2 control-label"></label>
     <div class="col-sm-9 label-only">
       <% onbase_document_id = form.obj["ref"] ? JSONModel(:onbase_document).id_for(form.obj["ref"]) : "${_resolved.id}" %>
-      <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, {:controller => :onbase_documents, :action => :download, :id => onbase_document_id}, {:class => "btn btn-default col-sm-6"} %>
+      <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, {:controller => :onbase_documents, :action => :download, :id => onbase_document_id}, {:class => "btn btn-default col-sm-6", :target => "_blank"} %>
     </div>
   </div>
 <% end %>

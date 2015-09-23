@@ -35,18 +35,6 @@ class OnbaseClient
   end
 
 
-  def download_stream(onbase_id)
-    [
-      200,
-      {
-        "Content-Type" => "text/plain",
-        "Content-Disposition" => "inline; filename=\"testing.txt\""
-      },
-      "Pants"
-    ]
-  end
-
-
   def get(suffix, headers = {})
     get_url = url(suffix)
 
@@ -108,6 +96,8 @@ class OnbaseClient
     http_request(get_url) do |http|
       req = Net::HTTP::Get.new(get_url.request_uri)
 
+      req.basic_auth @username, @password
+
       http.request(req) do |resp|
         buffer = FileBuffer.new
 
@@ -167,7 +157,6 @@ class OnbaseClient
     end
   end
 
-  private
 
   def http_request(url)
     Net::HTTP.start(url.host, url.port,

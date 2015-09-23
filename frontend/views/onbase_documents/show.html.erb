@@ -21,7 +21,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-9 label-only">
-              <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, {:controller => :onbase_documents, :action => :download, :id => @onbase_document.id}, {:class => "btn btn-default col-sm-6"} %>
+              <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, {:controller => :onbase_documents, :action => :download, :id => @onbase_document.id}, {:class => "btn btn-default col-sm-6", :target => "_blank"} %>
             </div>
           </div>
 

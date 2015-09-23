@@ -20,7 +20,10 @@ class ArchivesSpaceService < Sinatra::Base
     .returns([200, :updated]) \
   do
     client = OnbaseClient.new(:user => current_user.username)
-    document = client.stream_record(params[:id])
+
+    onbase_document = OnbaseDocument.to_jsonmodel(params[:id])
+
+    document = client.stream_record(onbase_document["onbase_id"])
 
     if document
       [200, {"Content-Type" => document.content_type,

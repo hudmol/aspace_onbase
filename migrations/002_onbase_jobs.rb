@@ -12,10 +12,6 @@ Sequel.migration do
       DateTime :system_mtime, :null => false, :index => true
       TextField :keywords
     end
-
-    alter_table(:onbase_keyword_job) do
-      add_unique_constraint([:onbase_id], :name => "onbase_job_uniq_id")
-    end
   end
 
   down do

@@ -5,17 +5,17 @@ class DocumentKeywordDefinitions
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :code => :agent_name},
-        {:type => "generated", :code => :event_id},
-        {:type => "generated", :code => :agent_id},
+        {:type => "generated", :code => :event_system_id},
+        {:type => "generated", :code => :agent_system_id},
       ]},
 
     "SPCL-Deed" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :code => :agent_name},
-        {:type => "generated", :code => :event_id},
-        {:type => "generated", :code => :record_id},
-        {:type => "generated", :code => :agent_id},
+        {:type => "generated", :code => :event_system_id},
+        {:type => "generated", :code => :linked_record_system_id},
+        {:type => "generated", :code => :agent_system_id},
         {:type => "generated", :code => :record_identifier},
       ]},
 
@@ -23,9 +23,9 @@ class DocumentKeywordDefinitions
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :code => :agent_name},
-        {:type => "generated", :code => :event_id},
-        {:type => "generated", :code => :record_id},
-        {:type => "generated", :code => :agent_id},
+        {:type => "generated", :code => :event_system_id},
+        {:type => "generated", :code => :linked_record_system_id},
+        {:type => "generated", :code => :agent_system_id},
         {:type => "generated", :code => :record_identifier},
       ]},
 
@@ -33,18 +33,18 @@ class DocumentKeywordDefinitions
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :code => :agent_name},
-        {:type => "generated", :code => :event_id},
-        {:type => "generated", :code => :record_id},
-        {:type => "generated", :code => :agent_id},
+        {:type => "generated", :code => :event_system_id},
+        {:type => "generated", :code => :linked_record_system_id},
+        {:type => "generated", :code => :agent_system_id},
         {:type => "generated", :code => :record_identifier},
       ]},
 
     "SPCL-Processing Plan" => {
       :supported_records => [:event],
       :fields => [
-        {:type => "generated", :code => :record_id},
+        {:type => "generated", :code => :linked_record_system_id},
         {:type => "generated", :code => :event_date},
-        {:type => "generated", :code => :event_id},
+        {:type => "generated", :code => :event_system_id},
         {:type => "generated", :code => :record_identifier},
         {:type => "text", :code => :catalog_location},
       ]},
@@ -52,7 +52,7 @@ class DocumentKeywordDefinitions
     "SPCL-Accession Snapshot" => {
       :supported_records => [:accession],
       :fields => [
-        {:type => "generated", :code => :accession_id},
+        {:type => "generated", :code => :accession_system_id},
         {:type => "generated", :code => :current_date},
         {:type => "generated", :code => :record_identifier},
       ]},
@@ -61,8 +61,8 @@ class DocumentKeywordDefinitions
       :supported_records => [:event],
       :fields => [
         {:type => "text", :code => :conservation_number},
-        {:type => "generated", :code => :event_id},
-        {:type => "generated", :code => :record_id},
+        {:type => "generated", :code => :event_system_id},
+        {:type => "generated", :code => :linked_record_system_id},
         {:type => "generated", :code => :record_identifier},
         {:type => "text", :code => :catalog_location},
       ]},
@@ -71,8 +71,8 @@ class DocumentKeywordDefinitions
       :supported_records => [:event],
       :fields => [
         {:type => "text", :code => :conservation_number},
-        {:type => "generated", :code => :event_id},
-        {:type => "generated", :code => :record_id},
+        {:type => "generated", :code => :event_system_id},
+        {:type => "generated", :code => :linked_record_system_id},
         {:type => "generated", :code => :record_identifier},
         {:type => "text", :code => :catalog_location},
       ]},
@@ -80,8 +80,8 @@ class DocumentKeywordDefinitions
     "SPCL-Missing Items record" => {
       :supported_records => [:event],
       :fields => [
-        {:type => "generated", :code => :event_id},
-        {:type => "generated", :code => :record_id},
+        {:type => "generated", :code => :event_system_id},
+        {:type => "generated", :code => :linked_record_system_id},
         {:type => "generated", :code => :record_identifier},
       ]},
 
@@ -89,16 +89,16 @@ class DocumentKeywordDefinitions
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :code => :agent_name},
-        {:type => "generated", :code => :event_id},
-        {:type => "generated", :code => :record_id},
+        {:type => "generated", :code => :event_system_id},
+        {:type => "generated", :code => :linked_record_system_id},
         {:type => "generated", :code => :record_identifier},
       ]},
 
     "SPCL-Deaccession record" => {
       :supported_records => [:event],
       :fields => [
-        {:type => "generated", :code => :event_id},
-        {:type => "generated", :code => :record_id},
+        {:type => "generated", :code => :event_system_id},
+        {:type => "generated", :code => :linked_record_system_id},
         {:type => "generated", :code => :record_identifier},
         {:type => "text", :code => :catalog_location},
       ]},
@@ -107,35 +107,35 @@ class DocumentKeywordDefinitions
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :code => :agent_name},
-        {:type => "generated", :code => :event_id},
+        {:type => "generated", :code => :event_system_id},
       ]},
 
     "SPCL-Permission to Publish" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :code => :agent_name},
-        {:type => "generated", :code => :event_id},
+        {:type => "generated", :code => :event_system_id},
       ]},
 
     "SPCL-Loan Agreement" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :code => :agent_name},
-        {:type => "generated", :code => :event_id},
+        {:type => "generated", :code => :event_system_id},
       ]},
 
     "SPCL-Facilities Report" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :code => :agent_name},
-        {:type => "generated", :code => :event_id},
+        {:type => "generated", :code => :event_system_id},
       ]},
 
     "SPCL-Insurance Valuations" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :code => :agent_name},
-        {:type => "generated", :code => :event_id},
+        {:type => "generated", :code => :event_system_id},
       ]},
 
     "SPCL - Example Document Type" => {

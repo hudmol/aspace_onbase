@@ -35,6 +35,18 @@ class OnbaseClient
   end
 
 
+  def download_stream(onbase_id)
+    [
+      200,
+      {
+        "Content-Type" => "text/plain",
+        "Content-Disposition" => "inline; filename=\"testing.txt\""
+      },
+      "Pants"
+    ]
+  end
+
+
   def get(suffix, headers = {})
     get_url = url(suffix)
 

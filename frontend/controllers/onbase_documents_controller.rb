@@ -2,7 +2,7 @@ class OnbaseDocumentsController < ApplicationController
 
   # FIXME: use proper permission here
   set_access_control  "view_repository" => [:index, :show, :download],
-                      "manage_repository" => [:new, :edit, :create, :update, :merge, :delete, :keywords_form]
+                      "update_onbase_record" => [:new, :create, :keywords_form]
 
 
 
@@ -22,10 +22,6 @@ class OnbaseDocumentsController < ApplicationController
     raise "Can only create an OnBase document from within the context of another record" if !inline?
 
     render_aspace_partial :partial => "onbase_documents/new"
-  end
-
-  def edit
-    @onbase_document = JSONModel(:onbase_document).find(params[:id])
   end
 
   def create
@@ -62,25 +58,6 @@ class OnbaseDocumentsController < ApplicationController
     end
   end
 
-  def update
-    handle_crud(:instance => :onbase_document,
-                :model => JSONModel(:onbase_document),
-                :obj => JSONModel(:onbase_document).find(params[:id]),
-                :on_invalid => ->(){ return render :action => :edit },
-                :on_valid => ->(id){
-                  flash[:success] = I18n.t("plugins.onbase_document._frontend.messages.updated")
-                  redirect_to :controller => :onbase_documents, :action => :edit, :id => id
-                })
-  end
-
-  def delete
-    onbase_document = JSONModel(:onbase_document).find(params[:id])
-    onbase_document.delete
-
-    flash[:success] = I18n.t("plugins.onbase_document._frontend.messages.deleted", JSONModelI18nWrapper.new(:onbase_document => onbase_document))
-    redirect_to(:controller => :onbase_documents, :action => :index, :deleted_uri => onbase_document.uri)
-  end
-
 
   def keywords_form
     definitions = DocumentKeywordDefinitions.new
@@ -97,7 +74,48 @@ class OnbaseDocumentsController < ApplicationController
 
 
   def download
-    render :text => "DOING THINGS"
+    queue = Queue.new
+
+    Thread.new do
+      begin
+        JSONModel::HTTP::stream("/onbase_documents/#{params[:id]}/download") do |download_response|
+          response.headers['Content-Disposition'] = download_response['Content-Disposition']
+          response.headers['Content-Type'] = download_response['Content-Type']
+          response.headers['Content-Length'] = download_response['Content-Length']
+
+          queue << :ok
+          download_response.read_body do |chunk|
+            queue << chunk
+          end
+        end
+      rescue
+        queue << {:error => ASUtils.json_parse($!.message)}
+      ensure
+        queue << :EOF
+      end
+
+    end
+
+    first_on_queue = queue.pop
+    if first_on_queue.kind_of?(Hash)
+      raise first_on_queue[:error]
+    end
+
+    self.response_body = Class.new do
+      def self.queue=(queue)
+        @queue = queue
+      end
+      def self.each(&block)
+        while(true)
+          elt = @queue.pop
+
+          break if elt === :EOF
+          block.call(elt)
+        end
+      end
+    end
+
+    self.response_body.queue = queue
   end
 
 

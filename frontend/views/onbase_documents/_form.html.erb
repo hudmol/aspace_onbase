@@ -44,9 +44,7 @@
         </div>
       </section>
     <% else %>
-      <section id="onBaseRecordDetails">
-        <p>TODO: Edit not currently supported</p>
-      </section>
+      <div class="alert alert-error">Edit of Onbase Record not supported</div>
     <% end %>
     <%= form.hidden_input "onbase_id" %>
   <% end %>

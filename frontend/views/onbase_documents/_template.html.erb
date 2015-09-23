@@ -1,21 +1,4 @@
-<% define_template("onbase_document_readonly", jsonmodel_definition(:onbase_document)) do |form| %>
-  <%= form.hidden_input("ref", form.obj["ref"] || "${ref}", {:class => "onbasedocument-ref"}) %>
-  <div class="form-group">
-    <label class="col-sm-2 control-label">Document Type</label>
-    <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["document_type"] : "${_resolved.document_type}" %></div>
-  </div>
-  <div class="form-group">
-    <label class="col-sm-2 control-label">OnBase ID</label>
-    <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["onbase_id"] : "${_resolved.onbase_id}" %></div>
-  </div>
-  <div class="form-group">
-    <label class="col-sm-2 control-label"></label>
-    <div class="col-sm-9 label-only">
-      <% onbase_document_id = form.obj["ref"] ? JSONModel(:onbase_document).id_for(form.obj["ref"]) : "${_resolved.id}" %>
-      <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, {:controller => :onbase_documents, :action => :download, :id => onbase_document_id}, {:class => "btn btn-default col-sm-6"} %>
-    </div>
-  </div>
-<% end %>
+<%= render_aspace_partial :partial => "onbase_documents/readonly" %>
 
 <% define_template("onbase_document", jsonmodel_definition(:onbase_document)) do |form| %>
   <div class="subrecord-form-fields onbase-document-container">

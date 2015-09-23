@@ -1,0 +1,22 @@
+<%
+   section_id = "onbase_documents" if section_id.blank?
+%>
+
+<section id="<%= section_id %>" class="subrecord-form-dummy">
+  <h3><%= I18n.t("plugins.onbase_document._plural") %></h3>
+
+  <%= render_aspace_partial :partial => "onbase_documents/readonly" %>
+
+  <div class="subrecord-form-container">
+    <% onbase_documents.each_with_index do | onbase_document, index | %>
+      <%= readonly_context :onbase_document, onbase_document do |readonly| %>
+        <div class="subrecord-form-fields">
+          <% readonly.emit_template("onbase_document_readonly") %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+
+
+</section>

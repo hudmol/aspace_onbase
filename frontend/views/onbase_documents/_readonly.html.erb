@@ -1,5 +1,6 @@
 <% define_template("onbase_document_readonly", jsonmodel_definition(:onbase_document)) do |form| %>
   <%= form.hidden_input("ref", form.obj["ref"] || "${ref}", {:class => "onbasedocument-ref"}) %>
+  <%= form.hidden_input("_resolved", form.obj["_resolved"] ? form.obj["_resolved"].to_json : "", {:class => "onbasedocument-resolved"}) %>
   <div class="form-group">
     <label class="col-sm-2 control-label">Document Type</label>
     <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["document_type"] : "${_resolved.document_type}" %></div>

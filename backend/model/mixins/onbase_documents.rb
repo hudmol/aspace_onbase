@@ -12,7 +12,7 @@ module OnbaseDocuments
 
   def update_from_json(json, extra_values = {}, apply_nested_records = true)
     obj = super
-    handle_onbase(json, obj)
+    self.class.handle_onbase(json, obj)
     obj
   end
 

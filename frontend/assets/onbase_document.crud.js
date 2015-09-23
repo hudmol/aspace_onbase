@@ -169,9 +169,10 @@ OnBaseRecordLinker.prototype.openUploadModal = function(formUrl) {
       "path": AS.quickTemplate(this.$container.closest("[data-name-path]").data("name-path"), {index: index}),
       "index": index
     };
-    var $readonlyView = AS.renderTemplate("template_onbase_document_readonly", data);
+    var $readonlyView = $(AS.renderTemplate("template_onbase_document_readonly", data).trim());
 
     this.$container.find(".form-group").replaceWith($readonlyView);
+    this.$container.find(".onbasedocument-resolved").val(JSON.stringify(json));
 
     $modal.modal("hide");
   };

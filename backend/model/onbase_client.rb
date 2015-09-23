@@ -21,7 +21,7 @@ class OnbaseClient
 
     req.basic_auth @username, @password
 
-    res = Net::HTTP.start(upload_url.host, upload_url.port, :use_ssl => upload_url.scheme == 'https') do |http|
+    res = http_request(upload_url) do |http|
       http.request(req)
     end
 
@@ -38,7 +38,7 @@ class OnbaseClient
   def get(suffix, headers = {})
     get_url = url(suffix)
 
-    Net::HTTP.start(get_url.host, get_url.port, :use_ssl => get_url.scheme == 'https') do |http|
+    http_request(get_url) do |http|
       req = Net::HTTP::Get.new(get_url.request_uri)
 
       headers.each {|k,v| req[k] = v }
@@ -69,7 +69,7 @@ class OnbaseClient
     p put_url
     p json
 
-    Net::HTTP.start(put_url.host, put_url.port, :use_ssl => put_url.scheme == 'https') do |http|
+    http_request(put_url) do |http|
       req = Net::HTTP::Put.new(put_url.request_uri)
       req['Content-type'] = 'text/json'
       req.body = json
@@ -93,7 +93,7 @@ class OnbaseClient
   def stream_record(onbase_id)
     get_url = url(onbase_id)
 
-    Net::HTTP.start(get_url.host, get_url.port, :use_ssl => get_url.scheme == 'https') do |http|
+    http_request(get_url) do |http|
       req = Net::HTTP::Get.new(get_url.request_uri)
 
       http.request(req) do |resp|
@@ -152,6 +152,14 @@ class OnbaseClient
         "keywordTypeName" => name,
         "keywordValue" => value
       }
+    end
+  end
+
+  private
+
+  def http_request(url)
+    Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') do |http|
+      yield(http)
     end
   end
 

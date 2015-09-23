@@ -58,7 +58,7 @@ class OnbaseDocumentsController < ApplicationController
                                            },
                                            :multipart_form_data)
 
-      render :json => ASUtils.json_parse(response.body)
+      render :json => ASUtils.json_parse(response.body), :status => response.code
     end
   end
 

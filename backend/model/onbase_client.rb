@@ -27,7 +27,9 @@ class OnbaseClient
     if res.code =~ /^2/
       ASUtils.json_parse(res.body)
     else
-      raise res.body
+      error = ASUtils.json_parse(res.body)
+      Log.error(error)
+      raise ReferenceError.new(error["message"])
     end
   end
 

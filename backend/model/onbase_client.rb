@@ -5,9 +5,9 @@ require 'net/http/post/multipart'
 class OnbaseClient
 
   def initialize(opts = {})
-    @base_url = 'https://onbase-dev.dartmouth.edu/api/asrobiservice/api/documents'
-    @username = ENV.fetch("ONBASE_USERNAME")
-    @password = ENV.fetch("ONBASE_PASSWORD")
+    @base_url = AppConfig[:onbase_robi_url]
+    @username = AppConfig[:onbase_robi_username]
+    @password = AppConfig[:onbase_robi_password]
 
     @user = opts.fetch(:user)
   end

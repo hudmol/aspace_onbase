@@ -8,6 +8,7 @@ Permission.define("delete_onbase_record",
 
 
 require_relative "../lib/document_keyword_definitions"
+require_relative "../lib/file_buffer"
 
 ArchivesSpaceService.settings.scheduler.every('10s') do
   $stderr.puts("RUNNING JOB")

@@ -1,6 +1,7 @@
 require 'net/http'
 require 'net/http/post/multipart'
 
+
 class OnbaseClient
 
   def initialize(opts = {})
@@ -84,6 +85,30 @@ class OnbaseClient
 
       response
     end
+  end
+
+
+  RecordStream = Struct.new(:content_type, :content_length, :body)
+
+  def stream_record(onbase_id)
+    get_url = url(onbase_id)
+
+    Net::HTTP.start(get_url.host, get_url.port, :use_ssl => get_url.scheme == 'https') do |http|
+      req = Net::HTTP::Get.new(get_url.request_uri)
+
+      http.request(req) do |resp|
+        buffer = FileBuffer.new
+
+        resp.read_body do |chunk|
+          buffer << chunk
+        end
+
+        return RecordStream.new(resp['Content-Type'], resp['Content-Length'], buffer)
+      end
+    end
+
+    # If all else fails...
+    nil
   end
 
 

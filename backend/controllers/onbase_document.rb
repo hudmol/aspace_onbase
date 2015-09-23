@@ -13,6 +13,25 @@ class ArchivesSpaceService < Sinatra::Base
   end
 
 
+  Endpoint.get('/onbase_documents/:id/download')
+    .description("Download an Onbase Document")
+    .params(["id", :id],)
+    .permissions([])
+    .returns([200, :updated]) \
+  do
+    client = OnbaseClient.new(:user => current_user.username)
+    document = client.stream_record(params[:id])
+
+    if document
+      [200, {"Content-Type" => document.content_type,
+             "Content-Length" => document.content_length},
+       document.body]
+    else
+      [404, {}, ""]
+    end
+  end
+
+
   Endpoint.post('/onbase_upload')
     .description("Upload a document to Onbase and return its assigned ID")
     .params(["file", UploadFile],
@@ -34,6 +53,8 @@ class ArchivesSpaceService < Sinatra::Base
 
     json_response(OnbaseDocument.to_jsonmodel(obj))
   end
+
+
 
 
   Endpoint.post('/onbase_documents')

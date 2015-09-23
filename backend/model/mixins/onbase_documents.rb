@@ -10,11 +10,16 @@ module OnbaseDocuments
   end
 
 
+  def update_from_json(json, extra_values = {}, apply_nested_records = true)
+    obj = super
+    handle_onbase(json, obj)
+    obj
+  end
+
+
   module ClassMethods
 
-    def create_from_json(json, opts = {})
-      obj = super
-
+    def handle_onbase(json, obj)
       if !Array(json.onbase_documents).empty?
         generator = DocumentKeywordsGenerator.new
         created_record = URIResolver.resolve_references(self.to_jsonmodel(obj), generator.get_resolved_types, {})
@@ -32,6 +37,12 @@ module OnbaseDocuments
         end
       end
 
+      obj
+    end
+
+    def create_from_json(json, opts = {})
+      obj = super
+      handle_onbase(json, obj)
       obj
     end
   end

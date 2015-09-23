@@ -144,7 +144,10 @@ class OnbaseClient
 
 
   def merge_keywords(*keywords)
-    keywords.reduce {|k1, k2| k1 + k2}.reverse.uniq {|k| k['keywordTypeName']}
+    # Previously we had a .reverse before the uniq to favor keeping the more
+    # recent keywords, but this messes up the "current_date" keyword, so we took
+    # it out.  Now when a keyword is set it stays set and can't be overridden.
+    keywords.reduce {|k1, k2| k1 + k2}.uniq {|k| k['keywordTypeName']}
   end
 
 

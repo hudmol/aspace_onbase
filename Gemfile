@@ -1,3 +1,4 @@
 source 'http://rubygems.org'
 
-gem 'webmock', :require => false
+# Disable for now to simplify deployment
+#gem 'webmock', :require => false

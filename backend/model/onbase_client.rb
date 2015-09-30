@@ -13,6 +13,16 @@ class OnbaseClient
   end
 
 
+  def maybe_parse_json(response)
+    begin
+      ASUtils.json_parse(response.body)
+    rescue JSON::ParserError
+      Log.error("Couldn't parse response as JSON: #{response.inspect} -- #{response.body}")
+      raise ReferenceError.new("Unrecognized response from Onbase web service")
+    end
+  end
+
+
   def upload(file_stream, file_name, content_type, doc_type, keywords = {})
     upload_url = url('', {"documentTypeName" => doc_type})
     req = Net::HTTP::Post::Multipart.new(upload_url.request_uri,
@@ -28,7 +38,7 @@ class OnbaseClient
     if res.code =~ /^2/
       ASUtils.json_parse(res.body)
     else
-      error = ASUtils.json_parse(res.body)
+      error = maybe_parse_json(res)
       Log.error(error)
       raise ReferenceError.new(error["message"])
     end
@@ -59,7 +69,7 @@ class OnbaseClient
     res = get(suffix, {"Accept" => "text/json"})
     p res
     p res.body
-    ASUtils.json_parse(res.body)
+    maybe_parse_json(res)
   end
 
 

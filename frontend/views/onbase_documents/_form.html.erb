@@ -11,11 +11,11 @@
       <section id="importOnBaseRecordSection">
         <% doctypes = onbase_document_doctype_options(@parent_type) %>
         <% if doctypes.length > 1 %>
-          <%= form.label_and_select "document_type", doctypes, :required => true %>
+          <%= form.label_and_select "document_type", doctypes, :required => true, :layout => 'stacked' %>
 
           <div class="form-group required">
-            <label class="col-sm-2 control-label" for="onbase_document_file_">File to Import</label>
-            <div class="col-sm-9">
+            <label class="control-label" for="onbase_document_file_">File to Import</label>
+            <div>
               <input class="form-control" id="onbase_document_file_" name="onbase_document[file]" type="file" value="">
             </div>
           </div>

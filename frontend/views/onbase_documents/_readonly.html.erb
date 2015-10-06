@@ -12,8 +12,8 @@
   <div class="form-group">
     <label class="col-sm-2 control-label"></label>
     <div class="col-sm-9 label-only">
-      <% onbase_document_id = form.obj["ref"] ? JSONModel(:onbase_document).id_for(form.obj["ref"]) : "${_resolved.id}" %>
-      <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, {:controller => :onbase_documents, :action => :download, :id => onbase_document_id}, {:class => "btn btn-default col-sm-6", :target => "_blank"} %>
+      <% onbase_document_id = form.obj["ref"] ? JSONModel(:onbase_document).id_for(form.obj["ref"]) : "_ONBASE_ID_REPLACE_ME_" %>
+      <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, url_for(:controller => :onbase_documents, :action => :download, :id => onbase_document_id), {:class => "btn btn-default col-sm-6 btn-onbase-document-download", :target => "_blank"} %>
     </div>
   </div>
 <% end %>

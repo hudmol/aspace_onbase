@@ -54,7 +54,10 @@ class OnbaseDocumentsController < ApplicationController
                                            },
                                            :multipart_form_data)
 
-      render :json => ASUtils.json_parse(response.body), :status => response.code
+      json = ASUtils.json_parse(response.body)
+      json['id'] = JSONModel(:onbase_document).id_for(json['uri'])
+
+      render :json => json, :status => response.code
     end
   end
 

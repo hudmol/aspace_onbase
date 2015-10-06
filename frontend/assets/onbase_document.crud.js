@@ -174,6 +174,10 @@ OnBaseRecordLinker.prototype.openUploadModal = function(formUrl) {
     this.$container.find(".form-group").replaceWith($readonlyView);
     this.$container.find(".onbasedocument-resolved").val(JSON.stringify(json));
 
+    var $downloadLink = $readonlyView.find(".btn-onbase-document-download");
+    var downloadUrl = $downloadLink.attr("href").replace("_ONBASE_ID_REPLACE_ME_", json['id']);
+    $downloadLink.attr("href", downloadUrl);
+
     $modal.modal("hide");
   };
 

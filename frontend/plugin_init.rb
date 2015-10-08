@@ -34,4 +34,20 @@ Rails.application.config.after_initialize do
   end
 
 
+  SearchHelper.class_eval do
+
+    alias_method :can_edit_search_result_pre_aspace_onbase?, :can_edit_search_result?
+
+    def can_edit_search_result?(record)
+      return false if record['primary_type'] === "onbase_document"
+      can_edit_search_result_pre_aspace_onbase?(record)
+    end
+
+  end
+
+
+  # force load our JSONModels so the are registered rather than lazy initialised
+  # we need this for parse_reference to work
+  JSONModel(:onbase_document)
+
 end

@@ -7,29 +7,27 @@
    <div class="col-md-9">
     <%= render_aspace_partial :partial => "toolbar" %>
     <div class="record-pane">
-     <%= readonly_context :onbase_document, @onbase_document do |readonly| %>
+     <%
+      form_obj = {
+        'ref' => @onbase_document.uri,
+        '_resolved' => @onbase_document
+      }
+     %>
+     <%= readonly_context :onbase_document, form_obj do |readonly| %>
       <h2><%= @onbase_document.display_string %>  <span class="label label-info"><%= I18n.t("onbase_document._singular") %></span></h2>
 
       <%= render_aspace_partial :partial => "shared/flash_messages" %>
 
-      <% define_template "onbase_document", jsonmodel_definition(:onbase_document) do |form, onbase_document| %>
-        <section id="basic_information">
+      <%= render_aspace_partial :partial => "onbase_documents/readonly" %>
+      <% readonly.emit_template("onbase_document_readonly") %>
 
-          <%= form.label_and_textfield "onbase_id" %>
-          <%= form.label_and_textfield "document_type" %>
+      <hr>
 
-          <div class="form-group">
-            <label class="col-sm-2 control-label"></label>
-            <div class="col-sm-9 label-only">
-              <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, {:controller => :onbase_documents, :action => :download, :id => @onbase_document.id}, {:class => "btn btn-default col-sm-6", :target => "_blank"} %>
-            </div>
-          </div>
+      <%= display_audit_info(@onbase_document) %>
 
-          <%= display_audit_info(@onbase_document) %>
-        </section>
-      <% end %>
-
-      <%= readonly.emit_template "onbase_document" %>
+      <script>
+        new OnBaseRecordReadOnlyView($(".record-pane"));
+      </script>
     <% end %>
    </div>
   </div>

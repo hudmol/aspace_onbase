@@ -174,9 +174,16 @@ OnBaseRecordLinker.prototype.openUploadModal = function(formUrl) {
     this.$container.find(".form-group").replaceWith($readonlyView);
     this.$container.find(".onbasedocument-resolved").val(JSON.stringify(json));
 
+    // As TrimPath notation is escaped by Rails helpers, add the ID manually to URLs
     var $downloadLink = $readonlyView.find(".btn-onbase-document-download");
     var downloadUrl = $downloadLink.attr("href").replace("_ONBASE_ID_REPLACE_ME_", json['id']);
     $downloadLink.attr("href", downloadUrl);
+
+    var $keywordsBtn = $readonlyView.find(".aspace-onbase-fetch-keywords-btn");
+    var keywordsUrl = $keywordsBtn.data("url").replace("_ONBASE_ID_REPLACE_ME_", json['id']);
+    $keywordsBtn.data("url", keywordsUrl);
+
+    new OnBaseRecordReadOnlyView($readonlyView);
 
     $modal.modal("hide");
   };
@@ -189,8 +196,38 @@ OnBaseRecordLinker.prototype.openUploadModal = function(formUrl) {
   $modal.trigger("resize");
 };
 
+
+function OnBaseRecordReadOnlyView($container) {
+  this.$container = $container;
+
+  this.setupFetchKeywordsAction();
+};
+
+
+OnBaseRecordReadOnlyView.prototype.setupFetchKeywordsAction = function() {
+  this.$container.on("click", ".aspace-onbase-fetch-keywords-btn", function(event) {
+    event.preventDefault();
+
+    var $button = $(this);
+
+    $button.prop("disabled", true);
+
+    $.get($button.data("url"), function(html) {
+      $button.replaceWith(html);
+    });
+  });
+};
+
+
+
 $(document).bind("subrecordcreated.aspace", function(event, object_name, subform) {
   if (object_name === "onbase_document") {
     new OnBaseRecordLinker(subform.find(".onbase-document-container"));
   }
+});
+
+$(function() {
+$(".onbase-document-readonly-container").each(function() {
+  new OnBaseRecordReadOnlyView($(this));
+});
 });

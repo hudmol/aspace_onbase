@@ -1,7 +1,7 @@
 class OnbaseDocumentsController < ApplicationController
 
   # FIXME: use proper permission here
-  set_access_control  "view_repository" => [:index, :show, :download],
+  set_access_control  "view_repository" => [:index, :show, :download, :keywords],
                       "update_onbase_record" => [:new, :create, :keywords_form]
 
 
@@ -119,6 +119,13 @@ class OnbaseDocumentsController < ApplicationController
     end
 
     self.response_body.queue = queue
+  end
+
+
+  def keywords
+    keyword_json = JSONModel::HTTP::get_json("/onbase_documents/#{params[:id]}/keywords")
+    @keywords = keyword_json['keywords']
+    render :partial => "onbase_documents/keywords_readonly"
   end
 
 

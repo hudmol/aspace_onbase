@@ -1,19 +1,30 @@
 <% define_template("onbase_document_readonly", jsonmodel_definition(:onbase_document)) do |form| %>
-  <%= form.hidden_input("ref", form.obj["ref"] || "${ref}", {:class => "onbasedocument-ref"}) %>
-  <%= form.hidden_input("_resolved", form.obj["_resolved"] ? form.obj["_resolved"].to_json : "", {:class => "onbasedocument-resolved"}) %>
-  <div class="form-group">
-    <label class="col-sm-2 control-label">Document Type</label>
-    <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["document_type"] : "${_resolved.document_type}" %></div>
-  </div>
-  <div class="form-group">
-    <label class="col-sm-2 control-label">OnBase ID</label>
-    <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["onbase_id"] : "${_resolved.onbase_id}" %></div>
-  </div>
-  <div class="form-group">
-    <label class="col-sm-2 control-label"></label>
-    <div class="col-sm-9 label-only">
-      <% onbase_document_id = form.obj["ref"] ? JSONModel(:onbase_document).id_for(form.obj["ref"]) : "_ONBASE_ID_REPLACE_ME_" %>
-      <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, url_for(:controller => :onbase_documents, :action => :download, :id => onbase_document_id), {:class => "btn btn-default col-sm-6 btn-onbase-document-download", :target => "_blank"} %>
+  <div class="onbase-document-readonly-container">
+    <% onbase_document_id = form.obj["ref"] ? JSONModel(:onbase_document).id_for(form.obj["ref"]) : "_ONBASE_ID_REPLACE_ME_" %>
+
+    <%= form.hidden_input("ref", form.obj["ref"] || "${ref}", {:class => "onbasedocument-ref"}) %>
+    <%= form.hidden_input("_resolved", form.obj["_resolved"] ? form.obj["_resolved"].to_json : "", {:class => "onbasedocument-resolved"}) %>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Document Type</label>
+      <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["document_type"] : "${_resolved.document_type}" %></div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">OnBase ID</label>
+      <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["onbase_id"] : "${_resolved.onbase_id}" %></div>
+    </div>
+    <hr>
+    <div class="form-group">
+      <label class="col-sm-2 control-label"></label>
+      <div class="col-sm-9 label-only">
+        <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, url_for(:controller => :onbase_documents, :action => :download, :id => onbase_document_id), {:class => "btn btn-default col-sm-6 btn-onbase-document-download", :target => "_blank"} %>
+      </div>
+    </div>
+    <hr>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Keywords</label>
+      <div class="col-sm-9 label-only">
+        <button class="btn btn-xs btn-default aspace-onbase-fetch-keywords-btn" data-url="<%= url_for(:controller => :onbase_documents, :action => :keywords, :id => onbase_document_id) %>">Fetch Keywords from OnBase</button>
+      </div>
     </div>
   </div>
 <% end %>

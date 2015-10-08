@@ -87,7 +87,21 @@ class ArchivesSpaceService < Sinatra::Base
     .permissions([])
     .returns([200, "(:onbase_document)"]) \
   do
+    client = OnbaseClient.new(:user => current_user.username)
+
     json_response(OnbaseDocument.to_jsonmodel(params[:id]))
+  end
+
+
+  Endpoint.get('/onbase_documents/:id/keywords')
+  .description("Fetch the keywords for an Onbase Document from the ROBI service")
+  .params(["id", :id])
+  .permissions([])
+  .returns([200, "(:onbase_document)"]) \
+  do
+    onbase_document = OnbaseDocument.to_jsonmodel(params[:id])
+    client = OnbaseClient.new(:user => current_user.username)
+    json_response(client.get_keywords(onbase_document['onbase_id']))
   end
 
 

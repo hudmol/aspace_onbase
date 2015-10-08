@@ -24,7 +24,11 @@ end
 
 
 ArchivesSpaceService.settings.scheduler.every('10s') do
-  $stderr.puts("RUNNING JOB")
   OnbaseKeywordJob.process_jobs
+end
+
+
+ArchivesSpaceService.settings.scheduler.every('10s') do
+  OnbaseDocument.delete_unlinked_documents
 end
 

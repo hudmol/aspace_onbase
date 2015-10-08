@@ -7,6 +7,13 @@ module OnbaseDocuments
     base.define_relationship(:name => :onbase_document,
                              :json_property => 'onbase_documents',
                              :contains_references_to_types => proc {[OnbaseDocument]})
+
+  end
+
+  ArchivesSpaceService.loaded_hook do
+    # Define a reciprocal relationship for everything that we got linked to
+    OnbaseDocument.define_relationship(:name => :onbase_document,
+                                       :contains_references_to_types => proc {OnbaseDocument.relationship_dependencies[:onbase_document]})
   end
 
 

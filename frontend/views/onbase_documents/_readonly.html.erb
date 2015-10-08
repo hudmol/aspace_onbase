@@ -12,6 +12,14 @@
       <label class="col-sm-2 control-label">OnBase ID</label>
       <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["onbase_id"] : "${_resolved.onbase_id}" %></div>
     </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Filename</label>
+      <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["filename"] : "${_resolved.filename}" %></div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Mime-Type</label>
+      <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["mime_type"] : "${_resolved.mime_type}" %></div>
+    </div>
     <hr>
     <div class="form-group">
       <label class="col-sm-2 control-label"></label>

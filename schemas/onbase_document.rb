@@ -10,6 +10,8 @@
       "document_type" => {"type" => "string", "ifmissing" => "error"},
       "keywords" => {"type" => "string"},
       "display_string" => {"type" => "string", "readonly" => "true"},
+      "filename" => {"type" => "string"},
+      "mime_type" => {"type" => "string"},
     },
   },
 }

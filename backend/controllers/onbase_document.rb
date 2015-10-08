@@ -52,7 +52,9 @@ class ArchivesSpaceService < Sinatra::Base
     onbase_id = upload_response["documentId"].to_s
 
     obj = OnbaseDocument.create_from_json(JSONModel(:onbase_document).from_hash(:onbase_id => onbase_id,
-                                                                                :document_type => params[:document_type]), {})
+                                                                                :document_type => params[:document_type],
+                                                                                :filename => file.filename,
+                                                                                :mime_type => file.type), {})
 
     json_response(OnbaseDocument.to_jsonmodel(obj))
   end

@@ -1,0 +1,17 @@
+<% if @keywords.empty? %>
+  <span class="text-warning">There are no keywords stored in OnBase for this document</span>
+<% else %>
+  <dl>
+    <% @keywords.each do |keyword_value_pairs| %>
+      <% ASUtils.wrap(keyword_value_pairs).each do |keyword_value_pair| %>
+        <dt>
+          <%= I18n.t("plugins.onbase_document_keyword.#{keyword_value_pair['keywordTypeName']}", :default => keyword_value_pair['keywordTypeName']) %>
+        </dt>
+        <dd>
+          <%= keyword_value_pair['keywordValue'] %>
+        </dd>
+      <% end %>
+    <% end %>
+  </dl>
+
+<% end %>

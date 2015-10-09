@@ -157,7 +157,7 @@ class OnbaseClient
     delete_url = url(suffix)
 
     http_request(delete_url) do |http|
-      req = Net::HTTP::Delete.new(put_url.request_uri)
+      req = Net::HTTP::Delete.new(delete_url.request_uri)
       req.basic_auth @username, @password
 
       response = http.request(req)

@@ -23,10 +23,29 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
 
   # Delete any document that isn't connected to an ArchivesSpace record
   def self.delete_unlinked_documents
-    # FIXME: Fire the delete.  And delete from onbase?
-    p OnbaseDocument.left_outer_join(OnbaseDocument.find_relationship(:onbase_document),
-                                     :onbase_document_id => :id).
-       filter(:onbase_document_id => nil).all
+    client = OnbaseClient.new(:user => "ArchivesSpaceBackgroundTask")
+
+    unlinked_ttl = if AppConfig.has_key?(:unlinked_onbase_document_ttl_seconds)
+                     Integer(AppConfig[:unlinked_onbase_document_ttl_seconds])
+                   else
+                     24 * 60 * 60
+                   end
+
+    kill_time = Time.at(Time.now.to_i - unlinked_ttl)
+
+    OnbaseDocument.left_outer_join(OnbaseDocument.find_relationship(:onbase_document),
+                                   :onbase_document_id => :id).
+      filter(:onbase_document_id => nil).
+      select(:onbase_document__id, :onbase_document__onbase_id).
+      where { Sequel.qualify(:onbase_document, :system_mtime) <= kill_time }.each do |row|
+
+      puts "Checking row: #{row.inspect}"
+      if client.delete(row[:onbase_id])
+        puts "Deleting: #{OnbaseDocument[row[:id]]}"
+      else
+        puts "ALL OK"
+      end
+    end
   end
 
 

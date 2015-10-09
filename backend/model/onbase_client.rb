@@ -133,6 +133,54 @@ class OnbaseClient
     put_json("#{onbase_id}/keywords", keywords.to_json)
   end
 
+  def record_exists?(onbase_id)
+    get_url = url(onbase_id)
+
+    http_request(get_url) do |http|
+      req = Net::HTTP::Get.new(get_url.request_uri)
+      headers.each {|k,v| req[k] = v }
+
+      req.basic_auth @username, @password
+      http.request(req) do |response|
+        return response.code == "200"
+      end
+    end
+
+  end
+
+  def http_delete(suffix)
+    delete_url = url(suffix)
+
+    http_request(delete_url) do |http|
+      req = Net::HTTP::Delete.new(put_url.request_uri)
+      req.basic_auth @username, @password
+
+      response = http.request(req)
+
+      if response.code !~ /^2/
+        raise "Failure in DELETE request to onbase: #{response.body}"
+      end
+
+      response
+    end
+  end
+
+  def delete(onbase_id)
+    if record_exists?(onbase_id)
+      begin
+        http_delete(onbase_id) && true
+      rescue
+        Log.error("Delete failed for record: #{onbase_id}")
+        Log.exception($!)
+
+        false
+      end
+    else
+      # Nothing to do, so pretend it all worked.
+      true
+    end
+  end
+
 
   private
 

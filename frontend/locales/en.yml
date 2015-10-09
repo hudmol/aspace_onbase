@@ -32,5 +32,9 @@ en:
       current_date: Current Date
       conservation_number: Conservation Number
       catalog_location: Catalog Location
+  search_results:
+    filter:
+      document_type_u_ustr: Document Type
+      mime_type_u_ustr: MIME-type
   onbase_document:
     <<: *onbase_document_attributes

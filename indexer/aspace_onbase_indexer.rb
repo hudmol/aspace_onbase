@@ -7,6 +7,8 @@ class CommonIndexer
     indexer.add_document_prepare_hook {|doc, record|
       if record['record']['jsonmodel_type'] == 'onbase_document'
         doc['title'] = record['record']['display_string']
+        doc['document_type_u_ustr'] = record['record']['document_type']
+        doc['mime_type_u_ustr'] = record['record']['mime_type']
       end
     }
 

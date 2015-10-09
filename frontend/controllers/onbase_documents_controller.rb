@@ -7,8 +7,9 @@ class OnbaseDocumentsController < ApplicationController
 
 
   def index
-    @search_data = Search.global({"sort" => "title_sort asc"}.merge(params_for_backend_search.merge({"facet[]" => SearchResultData.BASE_FACETS})),
-                                 "onbase_document")
+    @search_data = Search.for_type(session[:repo_id],
+                                   "onbase_document",
+                                   {"sort" => "title_sort asc"}.merge(params_for_backend_search.merge({"facet[]" => SearchResultData.BASE_FACETS})))
   end
 
   def show

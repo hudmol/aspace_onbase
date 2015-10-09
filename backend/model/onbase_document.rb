@@ -28,7 +28,7 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
   def self.delete_obsolete_documents
     client = OnbaseClient.new(:user => "ArchivesSpaceBackgroundTask")
 
-    all_ids = OnbaseDocument.select(:id).map {|row| row[:id]}
+    all_ids = OnbaseDocument.filter(:repo_id => model.active_repository).select(:id).map {|row| row[:id]}
     all_ids.each_slice(50) do |id_set|
       onbase_rows = OnbaseDocument.filter(:id => id_set).select(:id, :onbase_id).each do |row|
         begin
@@ -59,7 +59,8 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
 
     OnbaseDocument.left_outer_join(OnbaseDocument.find_relationship(:onbase_document),
                                    :onbase_document_id => :id).
-      filter(:onbase_document_id => nil).
+      filter(:onbase_document_id => nil,
+             :onbase_document__repo_id => model.active_repository).
       select(:onbase_document__id, :onbase_document__onbase_id).
       where { Sequel.qualify(:onbase_document, :system_mtime) <= kill_time }.each do |row|
 

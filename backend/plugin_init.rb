@@ -32,13 +32,19 @@ end
 
 
 ArchivesSpaceService.settings.scheduler.cron(AppConfig[:onbase_delete_unlinked_documents_cron], :allow_overlapping => false) do
-  RequestContext.open(:current_username => "admin") do
-    OnbaseDocument.delete_unlinked_documents
+  Repository.each do |repo|
+    RequestContext.open(:current_username => "admin",
+                        :repo_id => repo.id) do
+      OnbaseDocument.delete_unlinked_documents
+    end
   end
 end
 
 ArchivesSpaceService.settings.scheduler.cron(AppConfig[:onbase_delete_obsolete_documents_cron], :allow_overlapping => false) do
-  RequestContext.open(:current_username => "admin") do
-    OnbaseDocument.delete_obsolete_documents
+  Repository.each do |repo|
+    RequestContext.open(:current_username => "admin",
+                        :repo_id => repo.id) do
+      OnbaseDocument.delete_obsolete_documents
+    end
   end
 end

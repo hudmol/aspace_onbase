@@ -62,9 +62,7 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
 
       puts "Checking row: #{row.inspect}"
       if client.delete(row[:onbase_id])
-        puts "Deleting: #{OnbaseDocument[row[:id]]}"
-      else
-        puts "ALL OK"
+        OnbaseDocument[row[:id]].delete
       end
     end
   end

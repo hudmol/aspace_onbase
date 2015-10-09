@@ -57,7 +57,7 @@ class OnbaseClient
       response = http.request(req)
 
       if response.code != "200"
-        raise "Failure in GET request from onbase: #{response.body}"
+        raise ConflictException.new("Failure in GET request from onbase: #{response.body}")
       end
 
       response
@@ -83,7 +83,7 @@ class OnbaseClient
       response = http.request(req)
 
       if response.code !~ /^2/
-        raise "Failure in PUT request to onbase: #{response.body}"
+        raise ConflictException.new("Failure in PUT request to onbase: #{response.body}")
       end
 
       response
@@ -147,7 +147,7 @@ class OnbaseClient
         elsif response.code == "404"
           return false
         else
-          raise "Unknown record status for #{onbase_id} unknown"
+          raise ConflictException.new("Unknown record status for #{onbase_id} unknown")
         end
       end
     end
@@ -164,7 +164,7 @@ class OnbaseClient
       response = http.request(req)
 
       if response.code !~ /^2/
-        raise "Failure in DELETE request to onbase: #{response.body}"
+        raise ConflictException.new("Failure in DELETE request to onbase: #{response.body}")
       end
 
       response

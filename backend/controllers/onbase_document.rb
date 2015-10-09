@@ -113,7 +113,12 @@ class ArchivesSpaceService < Sinatra::Base
     .permissions([:delete_onbase_record])
     .returns([200, :deleted]) \
   do
-    handle_delete(OnbaseDocument, params[:id])
+    client = OnbaseClient.new(:user => current_user.username)
+
+    doc = OnbaseDocument[params[:id]]
+    if client.delete(doc.onbase_id)
+      handle_delete(OnbaseDocument, params[:id])
+    end
   end
 
 

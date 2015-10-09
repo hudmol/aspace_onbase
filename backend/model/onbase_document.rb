@@ -21,6 +21,27 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
   end
 
 
+  # Delete any document whose record in OnBase has vanished
+  def self.delete_obsolete_documents
+    client = OnbaseClient.new(:user => "ArchivesSpaceBackgroundTask")
+
+    all_ids = OnbaseDocument.select(:id).map {|row| row[:id]}
+    all_ids.each_slice(50) do |id_set|
+      onbase_rows = OnbaseDocument.filter(:id => id_set).select(:id, :onbase_id).each do |row|
+        begin
+          if !client.record_exists?(row[:onbase_id])
+            # delete it from ArchivesSpace
+            OnbaseDocument[row[:id]].delete
+          end
+        rescue
+          Log.error("Problem while checking record #{row[:onbase_id]}")
+          Log.exception($!)
+        end
+      end
+    end
+  end
+
+
   # Delete any document that isn't connected to an ArchivesSpace record
   def self.delete_unlinked_documents
     client = OnbaseClient.new(:user => "ArchivesSpaceBackgroundTask")

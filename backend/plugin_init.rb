@@ -11,7 +11,10 @@ require_relative "../lib/document_keyword_definitions"
 require_relative "../lib/file_buffer"
 
 # Hit these early just to make sure they're set
-settings = [:onbase_robi_url, :onbase_robi_username, :onbase_robi_password]
+settings = [:onbase_robi_url, :onbase_robi_username, :onbase_robi_password,
+            :onbase_keyword_job_interval_seconds,
+            :onbase_delete_unlinked_documents_cron,
+            :onbase_delete_obsolete_documents_cron]
 begin
   settings.each do |setting|
     AppConfig[setting]
@@ -23,12 +26,19 @@ rescue
 end
 
 
-ArchivesSpaceService.settings.scheduler.every '10s', :allow_overlapping => false do
+ArchivesSpaceService.settings.scheduler.every("#{AppConfig[:onbase_keyword_job_interval_seconds]}s", :allow_overlapping => false) do
   OnbaseKeywordJob.process_jobs
 end
 
 
-ArchivesSpaceService.settings.scheduler.every '10s', :allow_overlapping => false do
-  OnbaseDocument.delete_unlinked_documents
+ArchivesSpaceService.settings.scheduler.cron(AppConfig[:onbase_delete_unlinked_documents_cron], :allow_overlapping => false) do
+  RequestContext.open(:current_username => "admin") do
+    OnbaseDocument.delete_unlinked_documents
+  end
 end
 
+ArchivesSpaceService.settings.scheduler.cron(AppConfig[:onbase_delete_obsolete_documents_cron], :allow_overlapping => false) do
+  RequestContext.open(:current_username => "admin") do
+    OnbaseDocument.delete_obsolete_documents
+  end
+end

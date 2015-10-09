@@ -142,7 +142,13 @@ class OnbaseClient
 
       req.basic_auth @username, @password
       http.request(req) do |response|
-        return response.code == "200"
+        if response.code == "200"
+          return true
+        elsif response.code == "404"
+          return false
+        else
+          raise "Unknown record status for #{onbase_id} unknown"
+        end
       end
     end
 

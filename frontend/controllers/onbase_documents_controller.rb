@@ -12,7 +12,7 @@ class OnbaseDocumentsController < ApplicationController
   end
 
   def show
-    @onbase_document = JSONModel(:onbase_document).find(params[:id])
+    @onbase_document = JSONModel(:onbase_document).find(params[:id], "resolve[]" => ["linked_record"])
   end
 
   def new
@@ -46,7 +46,7 @@ class OnbaseDocumentsController < ApplicationController
     end
 
     File.open(file.tempfile) do |fh|
-      response = JSONModel::HTTP.post_form("/onbase_upload",
+      response = JSONModel::HTTP.post_form("/repositories/#{session[:repo_id]}/onbase_upload",
                                            {
                                              'file' => UploadIO.new(fh, file.content_type, file.original_filename),
                                              'document_type' => params[:onbase_document][:document_type],
@@ -81,7 +81,7 @@ class OnbaseDocumentsController < ApplicationController
 
     Thread.new do
       begin
-        JSONModel::HTTP::stream("/onbase_documents/#{params[:id]}/download") do |download_response|
+        JSONModel::HTTP::stream("/repositories/#{session[:repo_id]}/onbase_documents/#{params[:id]}/download") do |download_response|
           response.headers['Content-Disposition'] = download_response['Content-Disposition']
           response.headers['Content-Type'] = download_response['Content-Type']
           response.headers['Content-Length'] = download_response['Content-Length']
@@ -123,7 +123,7 @@ class OnbaseDocumentsController < ApplicationController
 
 
   def keywords
-    keyword_json = JSONModel::HTTP::get_json("/onbase_documents/#{params[:id]}/keywords")
+    keyword_json = JSONModel::HTTP::get_json("/repositories/#{session[:repo_id]}/onbase_documents/#{params[:id]}/keywords")
     @keywords = keyword_json['keywords']
     render :partial => "onbase_documents/keywords_readonly"
   end

@@ -138,7 +138,6 @@ class OnbaseClient
 
     http_request(get_url) do |http|
       req = Net::HTTP::Get.new(get_url.request_uri)
-      headers.each {|k,v| req[k] = v }
 
       req.basic_auth @username, @password
       http.request(req) do |response|

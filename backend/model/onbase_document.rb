@@ -4,7 +4,7 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
 
   corresponds_to JSONModel(:onbase_document)
 
-  set_model_scope :global
+  set_model_scope :repository
 
   def display_string
     "#{filename} - #{document_type} [#{onbase_id}] :: #{linked_record_display}"
@@ -15,6 +15,9 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
 
     jsons.zip(objs).each do |json, obj|
       json['display_string'] = obj.display_string
+      json['linked_record'] = {
+        'ref' => obj.linked_record_uri
+      }
     end
 
     jsons
@@ -68,11 +71,18 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
   end
 
 
+  def linked_record_uri
+    linked_record && linked_record.uri
+  end
+
+
   private
+
 
   def linked_record
     @linked_record ||= related_records(:onbase_document)[0]
   end
+
 
   def linked_record_display
     if linked_record

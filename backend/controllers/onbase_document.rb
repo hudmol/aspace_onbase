@@ -2,9 +2,10 @@ class ArchivesSpaceService < Sinatra::Base
 
   # TODO: use update_onbase_record permissions where needed
 
-  Endpoint.post('/onbase_documents/:id')
+  Endpoint.post('/repositories/:repo_id/onbase_documents/:id')
     .description("Update an Onbase Document")
     .params(["id", :id],
+            ["repo_id", :repo_id],
             ["onbase_document", JSONModel(:onbase_document), "The updated record", :body => true])
     .permissions([:update_onbase_record])
     .returns([200, :updated]) \
@@ -13,9 +14,10 @@ class ArchivesSpaceService < Sinatra::Base
   end
 
 
-  Endpoint.get('/onbase_documents/:id/download')
+  Endpoint.get('/repositories/:repo_id/onbase_documents/:id/download')
     .description("Download an Onbase Document")
-    .params(["id", :id],)
+    .params(["id", :id],
+            ["repo_id", :repo_id])
     .permissions([])
     .returns([200, :updated]) \
   do
@@ -35,11 +37,12 @@ class ArchivesSpaceService < Sinatra::Base
   end
 
 
-  Endpoint.post('/onbase_upload')
+  Endpoint.post('/repositories/:repo_id/onbase_upload')
     .description("Upload a document to Onbase and return its assigned ID")
     .params(["file", UploadFile],
             ["document_type", String],
-            ["keywords", String])
+            ["keywords", String],
+            ["repo_id", :repo_id])
     .permissions([:update_onbase_record])
     .returns([200, :created]) \
   do
@@ -62,9 +65,10 @@ class ArchivesSpaceService < Sinatra::Base
 
 
 
-  Endpoint.post('/onbase_documents')
+  Endpoint.post('/repositories/:repo_id/onbase_documents')
     .description("Create an Onbase Document")
-    .params(["onbase_document", JSONModel(:onbase_document), "The record to create", :body => true])
+    .params(["onbase_document", JSONModel(:onbase_document), "The record to create", :body => true],
+            ["repo_id", :repo_id])
     .permissions([:update_onbase_record])
     .returns([200, :created]) \
   do
@@ -72,9 +76,9 @@ class ArchivesSpaceService < Sinatra::Base
   end
 
 
-  Endpoint.get('/onbase_documents')
+  Endpoint.get('/repositories/:repo_id/onbase_documents')
     .description("Get a list of Onbase Documents")
-    .params()
+    .params(["repo_id", :repo_id])
     .paginated(true)
     .permissions([])
     .returns([200, "[(:onbase_document)]"]) \
@@ -83,21 +87,23 @@ class ArchivesSpaceService < Sinatra::Base
   end
 
 
-  Endpoint.get('/onbase_documents/:id')
+  Endpoint.get('/repositories/:repo_id/onbase_documents/:id')
     .description("Get an Onbase Document by ID")
-    .params(["id", :id])
+    .params(["id", :id],
+            ["repo_id", :repo_id],
+            ["resolve", :resolve])
     .permissions([])
     .returns([200, "(:onbase_document)"]) \
   do
-    client = OnbaseClient.new(:user => current_user.username)
-
-    json_response(OnbaseDocument.to_jsonmodel(params[:id]))
+    json = OnbaseDocument.to_jsonmodel(params[:id])
+    json_response(resolve_references(json, params[:resolve]))
   end
 
 
-  Endpoint.get('/onbase_documents/:id/keywords')
+  Endpoint.get('/repositories/:repo_id/onbase_documents/:id/keywords')
   .description("Fetch the keywords for an Onbase Document from the ROBI service")
-  .params(["id", :id])
+  .params(["id", :id],
+          ["repo_id", :repo_id])
   .permissions([])
   .returns([200, "(:onbase_document)"]) \
   do
@@ -107,9 +113,10 @@ class ArchivesSpaceService < Sinatra::Base
   end
 
 
-  Endpoint.delete('/onbase_documents/:id')
+  Endpoint.delete('/repositories/:repo_id/onbase_documents/:id')
     .description("Delete an Onbase Document")
-    .params(["id", :id])
+    .params(["id", :id],
+            ["repo_id", :repo_id])
     .permissions([:delete_onbase_record])
     .returns([200, :deleted]) \
   do
@@ -122,9 +129,10 @@ class ArchivesSpaceService < Sinatra::Base
   end
 
 
-  Endpoint.get('/search/onbase_document')
+  Endpoint.get('/repositories/:repo_id/search/onbase_document')
   .description("Search across OnBase Documents")
-  .params(*BASE_SEARCH_PARAMS)
+  .params(*BASE_SEARCH_PARAMS,
+          ["repo_id", :repo_id])
   .permissions([])
   .paginated(true)
   .returns([200, ""]) \

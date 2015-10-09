@@ -146,7 +146,7 @@ class OnbaseClient
         elsif response.code == "404"
           return false
         else
-          raise ConflictException.new("Unknown record status for #{onbase_id} unknown")
+          raise ConflictException.new("Unknown record status for #{onbase_id}")
         end
       end
     end

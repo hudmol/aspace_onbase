@@ -34,9 +34,28 @@ that need to be applied.  To run the migration:
 
 This plugin requires the following configuration:
 
-  * AppConfig[:onbase_robi_url] = "http://url.of.your.robi.service/api/documents"
-  * AppConfig[:onbase_robi_username] = "username"
-  * AppConfig[:onbase_robi_password] = "password"
+     AppConfig[:onbase_robi_url] = "http://url.of.your.robi.service/api/documents"
+     AppConfig[:onbase_robi_username] = "username"
+     AppConfig[:onbase_robi_password] = "password"
+
+     # Upload keywords to Onbase every 10 seconds
+     AppConfig[:onbase_keyword_job_interval_seconds] = 10
+
+     # Find and remove ArchivesSpace Onbase documents that were never
+     # linked to an ArchivesSpace record (once a minute).
+     AppConfig[:onbase_delete_unlinked_documents_cron] = "* * * * *"
+
+     # When deleting an unlinked document, only consider deleting
+     # records older than 1 day.  Otherwise we risk deleting records
+     # where someone has created an Onbase document but hasn't clicked
+     # "save" on the parent record yet.
+     AppConfig[:unlinked_onbase_document_ttl_seconds = 86400
+
+     # Find and removed Onbase documents (in ArchivesSpace) that don't
+     # exist in OnBase anymore
+     #
+     # This can take a while, so just run once a day (1:05am)
+     AppConfig[:onbase_delete_obsolete_documents_cron] = "5 1 * * *"
 
 
 ## Document Types and Keywords

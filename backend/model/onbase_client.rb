@@ -67,17 +67,12 @@ class OnbaseClient
 
   def get_json(suffix)
     res = get(suffix, {"Accept" => "text/json"})
-    p res
-    p res.body
     maybe_parse_json(res)
   end
 
 
   def put_json(suffix, json)
     put_url = url(suffix)
-
-    p put_url
-    p json
 
     http_request(put_url) do |http|
       req = Net::HTTP::Put.new(put_url.request_uri)
@@ -90,8 +85,6 @@ class OnbaseClient
       if response.code !~ /^2/
         raise "Failure in PUT request to onbase: #{response.body}"
       end
-
-      p response.body
 
       response
     end
@@ -128,7 +121,7 @@ class OnbaseClient
     onbase_keywords = get_keywords(onbase_id)
 
     merged = onbase_keywords.merge('keywords' => merge_keywords(onbase_keywords['keywords'], format_keywords(keywords)))
-    p put_keywords(onbase_id, merged)
+    put_keywords(onbase_id, merged)
   end
 
 

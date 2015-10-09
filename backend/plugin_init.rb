@@ -23,12 +23,12 @@ rescue
 end
 
 
-ArchivesSpaceService.settings.scheduler.every('10s') do
+ArchivesSpaceService.settings.scheduler.every '10s', :allow_overlapping => false do
   OnbaseKeywordJob.process_jobs
 end
 
 
-ArchivesSpaceService.settings.scheduler.every('10s') do
+ArchivesSpaceService.settings.scheduler.every '10s', :allow_overlapping => false do
   OnbaseDocument.delete_unlinked_documents
 end
 

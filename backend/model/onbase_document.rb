@@ -33,7 +33,7 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
       onbase_rows = OnbaseDocument.filter(:id => id_set).select(:id, :onbase_id).each do |row|
         begin
           if !client.record_exists?(row[:onbase_id])
-            # delete it from ArchivesSpace
+            puts "Deleting obsolete ArchivesSpace record: #{row[:id]}"
             OnbaseDocument[row[:id]].delete
           end
         rescue
@@ -65,7 +65,9 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
       where { Sequel.qualify(:onbase_document, :system_mtime) <= kill_time }.each do |row|
 
       puts "Checking row: #{row.inspect}"
+      Log.info("Deleting unlinked OnBase record #{row[:id]} (OnBase ID: #{row[:onbase_id]})")
       if client.delete(row[:onbase_id])
+        Log.info("Deleting corresponding OnBase document #{row[:id]}")
         OnbaseDocument[row[:id]].delete
       end
     end

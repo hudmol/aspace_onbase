@@ -11,6 +11,7 @@ class OnbaseKeywordJob < Sequel::Model(:onbase_keyword_job)
   end
 
   def self.process_jobs
+    Log.debug("AspaceOnbase Job: Upload Document Keywords")
     work_list = OnbaseKeywordJob.filter(:status => "new")
 
     work_list.each do |job|

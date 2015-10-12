@@ -46,9 +46,10 @@ This plugin requires the following configuration:
      AppConfig[:onbase_delete_unlinked_documents_cron] = "* * * * *"
 
      # When deleting an unlinked document, only consider deleting
-     # records older than 1 day.  Otherwise we risk deleting records
-     # where someone has created an Onbase document but hasn't clicked
-     # "save" on the parent record yet.
+     # records that have been unlinked more than this many seconds.
+     #
+     # Note: newly created Onbase documents (that have never been
+     # linked to anything) are never deleted automatically.
      AppConfig[:unlinked_onbase_document_ttl_seconds = 86400
 
      # Find and removed Onbase documents (in ArchivesSpace) that don't

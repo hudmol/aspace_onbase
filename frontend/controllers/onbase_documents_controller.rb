@@ -82,7 +82,11 @@ class OnbaseDocumentsController < ApplicationController
   def download
     queue = Queue.new
 
+    backend_session = JSONModel::HTTP.current_backend_session
+
     Thread.new do
+      JSONModel::HTTP.current_backend_session = backend_session
+
       begin
         JSONModel::HTTP::stream("/repositories/#{session[:repo_id]}/onbase_documents/#{params[:id]}/download") do |download_response|
           response.headers['Content-Disposition'] = download_response['Content-Disposition']

@@ -2,7 +2,7 @@ class OnbaseDocumentsController < ApplicationController
 
   # FIXME: use proper permission here
   set_access_control  "view_repository" => [:index, :show, :download, :keywords],
-                      "update_onbase_record" => [:new, :create, :keywords_form, :unlink]
+                      "manage_onbase_record" => [:new, :create, :keywords_form, :unlink]
 
 
   SEARCH_FACETS = ["document_type_u_ustr", "mime_type_u_ustr", "linked_to_record_u_ubool"]

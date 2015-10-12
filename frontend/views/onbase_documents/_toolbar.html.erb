@@ -1,4 +1,4 @@
-<% if user_can?('update_onbase_record') %>
+<% if user_can?('manage_onbase_record') %>
   <div class="record-toolbar">
     <% if ['new', 'create'].include?(controller.action_name) %>
       <div class="pull-left save-changes">

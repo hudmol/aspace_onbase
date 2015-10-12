@@ -1,13 +1,11 @@
 class ArchivesSpaceService < Sinatra::Base
 
-  # TODO: use update_onbase_record permissions where needed
-
   Endpoint.post('/repositories/:repo_id/onbase_documents/:id')
     .description("Update an Onbase Document")
     .params(["id", :id],
             ["repo_id", :repo_id],
             ["onbase_document", JSONModel(:onbase_document), "The updated record", :body => true])
-    .permissions([:update_onbase_record])
+    .permissions([:manage_onbase_record])
     .returns([200, :updated]) \
   do
     handle_update(OnbaseDocument, params[:id], params[:onbase_document])
@@ -18,7 +16,7 @@ class ArchivesSpaceService < Sinatra::Base
     .description("Download an Onbase Document")
     .params(["id", :id],
             ["repo_id", :repo_id])
-    .permissions([])
+    .permissions([:view_repository])
     .returns([200, :updated]) \
   do
     client = OnbaseClient.new(:user => current_user.username)
@@ -43,7 +41,7 @@ class ArchivesSpaceService < Sinatra::Base
             ["document_type", String],
             ["keywords", String],
             ["repo_id", :repo_id])
-    .permissions([:update_onbase_record])
+    .permissions([:manage_onbase_record])
     .returns([200, :created]) \
   do
     client = OnbaseClient.new(:user => current_user.username)
@@ -69,7 +67,7 @@ class ArchivesSpaceService < Sinatra::Base
     .description("Create an Onbase Document")
     .params(["onbase_document", JSONModel(:onbase_document), "The record to create", :body => true],
             ["repo_id", :repo_id])
-    .permissions([:update_onbase_record])
+    .permissions([:manage_onbase_record])
     .returns([200, :created]) \
   do
     handle_create(OnbaseDocument, params[:onbase_document])
@@ -80,7 +78,7 @@ class ArchivesSpaceService < Sinatra::Base
     .description("Get a list of Onbase Documents")
     .params(["repo_id", :repo_id])
     .paginated(true)
-    .permissions([])
+    .permissions([:view_repository])
     .returns([200, "[(:onbase_document)]"]) \
   do
     handle_listing(OnbaseDocument, params)
@@ -92,7 +90,7 @@ class ArchivesSpaceService < Sinatra::Base
     .params(["id", :id],
             ["repo_id", :repo_id],
             ["resolve", :resolve])
-    .permissions([])
+    .permissions([:view_repository])
     .returns([200, "(:onbase_document)"]) \
   do
     json = OnbaseDocument.to_jsonmodel(params[:id])
@@ -104,7 +102,7 @@ class ArchivesSpaceService < Sinatra::Base
   .description("Fetch the keywords for an Onbase Document from the ROBI service")
   .params(["id", :id],
           ["repo_id", :repo_id])
-  .permissions([])
+  .permissions([:view_repository])
   .returns([200, "(:onbase_document)"]) \
   do
     onbase_document = OnbaseDocument.to_jsonmodel(params[:id])
@@ -117,7 +115,7 @@ class ArchivesSpaceService < Sinatra::Base
     .description("Unlink an Onbase Document")
     .params(["id", :id],
             ["repo_id", :repo_id])
-    .permissions([:update_onbase_record])
+    .permissions([:manage_onbase_record])
     .returns([200, :deleted]) \
   do
     onbase_document = OnbaseDocument.get_or_die(params[:id])
@@ -130,7 +128,7 @@ class ArchivesSpaceService < Sinatra::Base
   .description("Search across OnBase Documents")
   .params(*BASE_SEARCH_PARAMS,
           ["repo_id", :repo_id])
-  .permissions([])
+  .permissions([:view_repository])
   .paginated(true)
   .returns([200, ""]) \
   do

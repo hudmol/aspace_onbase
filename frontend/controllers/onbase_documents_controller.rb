@@ -1,6 +1,5 @@
 class OnbaseDocumentsController < ApplicationController
 
-  # FIXME: use proper permission here
   set_access_control  "view_repository" => [:index, :show, :download, :keywords],
                       "manage_onbase_record" => [:new, :create, :keywords_form, :unlink]
 

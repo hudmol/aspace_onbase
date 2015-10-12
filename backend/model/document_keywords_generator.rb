@@ -58,7 +58,6 @@ class DocumentKeywordsGenerator
       }.compact
     },
 
-    # FIXME: what happens if there's more than one linked agent?
     :agent_system_id => proc {|record|
       linked_agent = Array(record['linked_agents'])[0]
       if linked_agent
@@ -98,12 +97,6 @@ class DocumentKeywordsGenerator
   def keywords_for(containing_jsonmodel, onbase_document)
     definitions = DocumentKeywordDefinitions.new
 
-    # onbase_document
-    $stderr.puts("\n*** DEBUG #{(Time.now.to_f * 1000).to_i} [document_keywords_generator.rb:28 43c229]: " + {'onbase_document' => onbase_document}.inspect + "\n")
-
-    # containing_jsonmodel
-    $stderr.puts("\n*** DEBUG #{(Time.now.to_f * 1000).to_i} [document_keywords_generator.rb:36 6e43d9]: " + {'containing_jsonmodel' => containing_jsonmodel}.inspect + "\n")
-
     fields_to_generate = definitions.definitions_for_document_type(onbase_document['document_type']).
                          select {|field| field[:type] == "generated"}
 
@@ -114,9 +107,6 @@ class DocumentKeywordsGenerator
         keywords[keyword.label] = keyword.keyword
       end
     }
-
-    # keywords
-    $stderr.puts("\n*** DEBUG #{(Time.now.to_f * 1000).to_i} [document_keywords_generator.rb:153 ae9818]: " + {'keywords' => keywords}.inspect + "\n")
 
     keywords
   end

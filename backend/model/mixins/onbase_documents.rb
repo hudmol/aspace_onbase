@@ -31,16 +31,25 @@ module OnbaseDocuments
         generator = DocumentKeywordsGenerator.new
         created_record = URIResolver.resolve_references(self.to_jsonmodel(obj), generator.get_resolved_types, {})
 
+        onbase_ids = []
+
         Array(json.onbase_documents).each do |onbase_ref|
           ref = JSONModel.parse_reference(onbase_ref['ref'])
 
           next unless ref[:type] == 'onbase_document'
+          onbase_ids << ref[:id]
           onbase_document = OnbaseDocument.to_jsonmodel(ref[:id])
 
           keywords = generator.keywords_for(created_record, onbase_document)
 
           # Create a pending job for setting keywords and run it immediately
           OnbaseKeywordJob.create(onbase_document, keywords, RequestContext.get(:current_username))
+        end
+
+        # All of the OnBase documents have now been linked to a record.  Mark
+        # them as such so they can be cleaned up later if ever unlinked.
+        unless onbase_ids.empty?
+          OnbaseDocument.filter(:id => onbase_ids).update(:was_linked => 1)
         end
       end
 

@@ -66,6 +66,7 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
       filter(:onbase_document_id => nil,
              :onbase_document__repo_id => self.active_repository).
       select(:onbase_document__id, :onbase_document__onbase_id).
+      filter(:onbase_document__was_linked, 1).
       where { Sequel.qualify(:onbase_document, :system_mtime) <= kill_time }.each do |row|
 
       puts "Checking row: #{row.inspect}"

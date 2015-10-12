@@ -32,9 +32,12 @@ en:
       current_date: Current Date
       conservation_number: Conservation Number
       catalog_location: Catalog Location
+    actions:
+      show_all: Show All
   search_results:
     filter:
       document_type_u_ustr: Document Type
       mime_type_u_ustr: MIME-type
+      linked_to_record_u_ubool: Linked to Record
   onbase_document:
     <<: *onbase_document_attributes

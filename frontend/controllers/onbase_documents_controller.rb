@@ -5,11 +5,13 @@ class OnbaseDocumentsController < ApplicationController
                       "update_onbase_record" => [:new, :create, :keywords_form]
 
 
+  SEARCH_FACETS = ["document_type_u_ustr", "mime_type_u_ustr", "linked_to_record_u_ubool"]
+
 
   def index
     @search_data = Search.for_type(session[:repo_id],
                                    "onbase_document",
-                                   {"sort" => "title_sort asc"}.merge(params_for_backend_search.merge({"facet[]" => ["document_type_u_ustr", "mime_type_u_ustr"]})))
+                                   {"sort" => "title_sort asc"}.merge(params_for_backend_search.merge({"facet[]" => SEARCH_FACETS})))
   end
 
   def show

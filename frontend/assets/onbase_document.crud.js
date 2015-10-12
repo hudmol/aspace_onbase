@@ -123,12 +123,15 @@ function OnBaseRecordLinker($container) {
   this.$container = $container;
 
   this.setupUploadAction();
+  this.setupLinker();
 };
 
 OnBaseRecordLinker.prototype.setupUploadAction = function() {
   var self = this;
 
-  self.$container.on("click", ".upload-onbase-document-btn", function() {
+  self.$container.on("click", ".upload-onbase-document-btn", function(event) {
+    event.preventDefault();
+
     self.openUploadModal($(this).data("target"));
   });
 };
@@ -171,7 +174,7 @@ OnBaseRecordLinker.prototype.openUploadModal = function(formUrl) {
     };
     var $readonlyView = $(AS.renderTemplate("template_onbase_document_readonly", data).trim());
 
-    this.$container.find(".form-group").replaceWith($readonlyView);
+    this.$container.empty().html($readonlyView);
     this.$container.find(".onbasedocument-resolved").val(JSON.stringify(json));
 
     // As TrimPath notation is escaped by Rails helpers, add the ID manually to URLs
@@ -194,6 +197,16 @@ OnBaseRecordLinker.prototype.openUploadModal = function(formUrl) {
 
   $modal.scrollTo(".alert");
   $modal.trigger("resize");
+};
+
+
+OnBaseRecordLinker.prototype.setupLinker = function() {
+  var self = this;
+  self.$container.on("click", ".onbase-show-linker", function() {
+    $(this).closest(".form-group").siblings(".form-group").remove();
+    $(this).closest(".form-group").remove();
+    self.$container.find(".onbase-document-linker").show();
+  });
 };
 
 

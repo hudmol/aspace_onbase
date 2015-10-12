@@ -9,6 +9,7 @@ class CommonIndexer
         doc['title'] = record['record']['display_string']
         doc['document_type_u_ustr'] = record['record']['document_type']
         doc['mime_type_u_ustr'] = record['record']['mime_type']
+        doc['linked_to_record_u_ubool'] = !!record['record']['linked_record']
       end
     }
 

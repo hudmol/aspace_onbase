@@ -7,8 +7,17 @@
         <div class="col-sm-2 control-label"></div>
         <div class="col-sm-9">
           <% parent_type = form.obj["jsonmodel_type"] || form.parent_context %>
-          <a href="javascript:void(0);" data-target="<%= url_for :controller => :onbase_documents, :action => :new, :inline => true, :parent_type => parent_type %>" class="btn btn-success upload-onbase-document-btn col-sm-6"><span class="glyphicon glyphicon-upload"></span> Upload Document</a>
+          <button data-target="<%= url_for :controller => :onbase_documents, :action => :new, :inline => true, :parent_type => parent_type %>" class="btn btn-success upload-onbase-document-btn col-sm-6"><span class="glyphicon glyphicon-upload"></span> Upload Document</button>
         </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-2 control-label"></div>
+        <div class="col-sm-9">
+          <a href="javascript:void(0);" class="onbase-show-linker">Or link to an existing OnBase Document?</a>
+        </div>
+      </div>
+      <div class="onbase-document-linker" style="display:none;">
+        <%= render_aspace_partial :partial => "onbase_documents/linker", :locals => {:form => form} %>
       </div>
     <% else %>
       <% form.emit_template "onbase_document_readonly" %>

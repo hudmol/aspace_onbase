@@ -2,7 +2,7 @@ class OnbaseDocumentsController < ApplicationController
 
   # FIXME: use proper permission here
   set_access_control  "view_repository" => [:index, :show, :download, :keywords],
-                      "update_onbase_record" => [:new, :create, :keywords_form]
+                      "update_onbase_record" => [:new, :create, :keywords_form, :unlink]
 
 
   SEARCH_FACETS = ["document_type_u_ustr", "mime_type_u_ustr", "linked_to_record_u_ubool"]
@@ -129,6 +129,13 @@ class OnbaseDocumentsController < ApplicationController
     keyword_json = JSONModel::HTTP::get_json("/repositories/#{session[:repo_id]}/onbase_documents/#{params[:id]}/keywords")
     @keywords = keyword_json['keywords']
     render :partial => "onbase_documents/keywords_readonly"
+  end
+
+
+  def unlink
+    JSONModel::HTTP::post_form("/repositories/#{session[:repo_id]}/onbase_documents/#{params[:id]}/unlink")
+
+    redirect_to(:controller => :onbase_documents, :action => :index)
   end
 
 

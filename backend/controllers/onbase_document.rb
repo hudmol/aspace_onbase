@@ -113,19 +113,16 @@ class ArchivesSpaceService < Sinatra::Base
   end
 
 
-  Endpoint.delete('/repositories/:repo_id/onbase_documents/:id')
-    .description("Delete an Onbase Document")
+  Endpoint.post('/repositories/:repo_id/onbase_documents/:id/unlink')
+    .description("Unlink an Onbase Document")
     .params(["id", :id],
             ["repo_id", :repo_id])
-    .permissions([:delete_onbase_record])
+    .permissions([:update_onbase_record])
     .returns([200, :deleted]) \
   do
-    client = OnbaseClient.new(:user => current_user.username)
-
-    doc = OnbaseDocument[params[:id]]
-    if client.delete(doc.onbase_id)
-      handle_delete(OnbaseDocument, params[:id])
-    end
+    onbase_document = OnbaseDocument.to_jsonmodel(params[:id])
+    OnbaseDocument.delete_existing_relationships(onbase_document, true)
+    deleted_response(params[:id])
   end
 
 

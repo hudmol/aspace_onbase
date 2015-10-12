@@ -4,4 +4,5 @@ ArchivesSpace::Application.routes.draw do
   resources :onbase_document
   match('/plugins/onbase_documents/:id/download' => 'onbase_documents#download', :via => [:get])
   match('/plugins/onbase_documents/:id/keywords' => 'onbase_documents#keywords', :via => [:get])
+  match('/plugins/onbase_documents/:id/unlink' => 'onbase_documents#unlink', :via => [:post])
 end

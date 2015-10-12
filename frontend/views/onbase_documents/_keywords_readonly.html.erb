@@ -1,5 +1,5 @@
 <% if @keywords.empty? %>
-  <span class="text-warning">There are no keywords stored in OnBase for this document</span>
+  <span class="text-warning"><%= I18n.t("plugins.onbase_document._frontend.messages.no_keywords") %></span>
 <% else %>
   <dl>
     <% @keywords.each do |keyword_value_pairs| %>

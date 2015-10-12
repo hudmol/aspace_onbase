@@ -9,10 +9,10 @@
       </div>
     <% elsif field[:type] == 'generated' %>
       <div class="label-only">
-        <em class="text-muted">System Generated</em>
+        <em class="text-muted"><%= I18n.t("plugins.onbase_document._frontend.messages.system_generated") %></em>
       </div>
     <% else %>
-      Type not supported: <%= field[:type] %>
+      <%= I18n.t("plugins.onbase_document._frontend.messages.type_not_supported", :type => field[:type]) %>
     <% end %>
   </div>
 <% end %>

@@ -5,33 +5,33 @@
     <%= form.hidden_input("ref", form.obj["ref"] || "${ref}", {:class => "onbasedocument-ref"}) %>
     <%= form.hidden_input("_resolved", form.obj["_resolved"] ? form.obj["_resolved"].to_json : "", {:class => "onbasedocument-resolved"}) %>
     <div class="form-group">
-      <label class="col-sm-2 control-label">Document Type</label>
+      <label class="col-sm-2 control-label"><%= I18n.t("plugins.onbase_document.document_type") %></label>
       <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["document_type"] : "${_resolved.document_type}" %></div>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label">OnBase ID</label>
+      <label class="col-sm-2 control-label"><%= I18n.t("plugins.onbase_document.onbase_id") %></label>
       <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["onbase_id"] : "${_resolved.onbase_id}" %></div>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label">Filename</label>
+      <label class="col-sm-2 control-label"><%= I18n.t("plugins.onbase_document.filename") %></label>
       <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["filename"] : "${_resolved.filename}" %></div>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label">Mime-Type</label>
+      <label class="col-sm-2 control-label"><%= I18n.t("plugins.onbase_document.mime_type") %></label>
       <div class="col-sm-9 label-only"><%= form.obj["_resolved"] ? form.obj["_resolved"]["mime_type"] : "${_resolved.mime_type}" %></div>
     </div>
     <hr>
     <div class="form-group">
       <label class="col-sm-2 control-label"></label>
       <div class="col-sm-9 label-only">
-        <%= link_to "<span class='glyphicon glyphicon-download'></span> Download Document".html_safe, url_for(:controller => :onbase_documents, :action => :download, :id => onbase_document_id), {:class => "btn btn-default col-sm-6 btn-onbase-document-download", :target => "_blank"} %>
+        <%= link_to "<span class='glyphicon glyphicon-download'></span> #{I18n.t("plugins.onbase_document._frontend.action.download")}".html_safe, url_for(:controller => :onbase_documents, :action => :download, :id => onbase_document_id), {:class => "btn btn-default col-sm-6 btn-onbase-document-download", :target => "_blank"} %>
       </div>
     </div>
     <hr>
     <div class="form-group">
-      <label class="col-sm-2 control-label">Keywords</label>
+      <label class="col-sm-2 control-label"><%= I18n.t("plugins.onbase_document.keywords") %></label>
       <div class="col-sm-9 label-only">
-        <button class="btn btn-xs btn-default aspace-onbase-fetch-keywords-btn" data-url="<%= url_for(:controller => :onbase_documents, :action => :keywords, :id => onbase_document_id) %>">Fetch Keywords from OnBase</button>
+        <button class="btn btn-xs btn-default aspace-onbase-fetch-keywords-btn" data-url="<%= url_for(:controller => :onbase_documents, :action => :keywords, :id => onbase_document_id) %>"><%= I18n.t("plugins.onbase_document._frontend.action.fetch_keywords") %></button>
       </div>
     </div>
   </div>

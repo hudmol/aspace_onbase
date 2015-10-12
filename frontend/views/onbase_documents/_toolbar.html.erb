@@ -8,9 +8,9 @@
     <div class="btn btn-inline-form pull-right">
         <%= button_delete_action url_for(:controller => :onbase_documents, :action => :unlink, :id => @onbase_document.id),
           {
-            :label => "Delete OnBase Document",
-            :"data-title" => "Delete OnBase Document",
-            :"data-message" => "This action will queue the OnBase Document to be deleted from both ArchivesSpace and OnBase. This action cannot be undone."
+            :label => I18n.t("plugins.onbase_document._frontend.action.delete"),
+            :"data-title" => I18n.t("plugins.onbase_document._frontend.action.delete"),
+            :"data-message" => I18n.t("plugins.onbase_document._frontend.messages.delete")
           }
         %>
     </div>

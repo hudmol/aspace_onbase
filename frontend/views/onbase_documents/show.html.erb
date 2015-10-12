@@ -16,7 +16,7 @@
 
       <% if @onbase_document['linked_record'].blank? || @onbase_document['linked_record']['ref'].blank? %>
         <div class="alert alert-warning">
-          OnBase Document is unlinked
+          <%= I18n.t("plugins.onbase_document._frontend.messages.unlinked") %>
         </div>
       <% end %>
 
@@ -31,7 +31,7 @@
       <% if @onbase_document['linked_record'] && @onbase_document['linked_record']['_resolved'] %>
           <hr>
           <div class="form-group">
-            <label class="col-sm-2 control-label">Linked Record</label>
+            <label class="col-sm-2 control-label"><%= I18n.t("plugins.onbase_document.linked_record") %></label>
             <div class="col-sm-9 token-list">
               <%= render_token :object => @onbase_document['linked_record']['_resolved'],
                                :label => @onbase_document['linked_record']['_resolved']['display_string'] || @onbase_document['linked_record']['_resolved']['title'] || @onbase_document['linked_record']['_resolved']['uri'],

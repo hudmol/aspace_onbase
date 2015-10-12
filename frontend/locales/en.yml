@@ -11,16 +11,38 @@ en:
       onbase_id: OnBase ID
       document_type: Document Type
       keywords: Keywords
+      filename: Filename
+      mime_type: MIME-Type
+      linked_record: Linked Record
       _frontend:
         action:
           add: Add OnBase Document
           save: Save OnBase Document
           create: Create an OnBase Document
+          download: Download Document
+          upload: Upload Document
+          fetch_keywords: Fetch Keywords from OnBase
+          show_linker: Or link to an existing OnBase Document?
+          upload_and_link: Upload and Link to OnBase Document
+          delete: Delete OnBase Document
         messages:
           updated: OnBase Document Saved
           document_type_required: Document Type is required
           file_required: File to Import is required
           keyword_required: Keyword "%{code}" is required
+          no_document_types_defined: "There are no OnBase document types defined for this record: %{parent_type}"
+          transferring_file_step_1: Transferring file...
+          transferring_file_step_2: Transferred!
+          transferring_file_step_3: Sending to the OnBase Service...
+          transferring_file_step_4: Done!
+          transferring_file_error: Error -- see message above.
+          edit_not_supported: Edit of Onbase Record not supported
+          system_generated: System Generated
+          type_not_supported: "Type not supported: %{type}"
+          no_keywords: There are no keywords stored in OnBase for this document
+          delete: This action will queue the OnBase Document to be deleted from both ArchivesSpace and OnBase. This action cannot be undone.
+          unlinked: OnBase Document is unlinked
+
     onbase_document_keyword:
       linked_record_system_id: Record ID
       agent_system_id: Agent ID

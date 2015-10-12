@@ -23,7 +23,7 @@
           <section id="onBaseKeywords"></section>
         <% else %>
           <div class="alert alert-danger">
-            There are no OnBase document types defined for this record: <%= @parent_type %>
+            <%= I18n.t("plugins.onbase_document._frontend.messages.no_document_types_defined", :parent_type => @parent_type) %>
           </div>
         <% end %>
 
@@ -34,17 +34,17 @@
 
         <div id="importOnBaseLog" class="alert alert-info" style="display:none">
           <div>
-            <span class="import-onbase-step step-1" style="display:none">Transferring file...</span> <span class="import-onbase-step step-2 text-success" style="display:none">Transferred!</span>
+            <span class="import-onbase-step step-1" style="display:none"><%= I18n.t("plugins.onbase_document._frontend.messages.transferring_file_step_1") %></span> <span class="import-onbase-step step-2 text-success" style="display:none"><%= I18n.t("plugins.onbase_document._frontend.messages.transferring_file_step_2") %></span>
           </div>
           <div>
-            <span class="import-onbase-step step-3" style="display:none">Sending to the OnBase Service...</span> <span class="import-onbase-step step-4 text-success" style="display:none">Done!</span>
+            <span class="import-onbase-step step-3" style="display:none"><%= I18n.t("plugins.onbase_document._frontend.messages.transferring_file_step_3") %></span> <span class="import-onbase-step step-4 text-success" style="display:none"><%= I18n.t("plugins.onbase_document._frontend.messages.transferring_file_step_4") %></span>
           </div>
 
-          <div class="import-onbase-step step-error text-danger" style="display:none">Error -- see message above.</div>
+          <div class="import-onbase-step step-error text-danger" style="display:none"><%= I18n.t("plugins.onbase_document._frontend.messages.transferring_file_error") %></div>
         </div>
       </section>
     <% else %>
-      <div class="alert alert-error">Edit of Onbase Record not supported</div>
+      <div class="alert alert-error"><%= I18n.t("plugins.onbase_document._frontend.messages.edit_not_supported") %></div>
     <% end %>
     <%= form.hidden_input "onbase_id" %>
   <% end %>

@@ -22,6 +22,37 @@ rescue
 end
 
 
+# Make sure all required keyword generators are defined
+missing = []
+DocumentKeywordDefinitions::DOCUMENT_TYPE_DEFINITIONS.each do |type, definition|
+  generator = DocumentKeywordsGenerator.new
+
+  definition[:fields].each do |field|
+    if field.fetch(:type) == 'generated'
+      begin
+        generator.generator_for(field.fetch(:code))
+      rescue
+        missing << {:document_type => type, :code => field.fetch(:code), :exception => $!}
+      end
+    end
+  end
+end
+
+if !missing.empty?
+  msg = "Missing a keyword generator for the following:\n\n"
+  missing.each do |missing|
+    msg += "  * Document type #{missing[:document_type]}, field code #{missing[:code]} (#{missing[:exception]})\n"
+  end
+  msg += "\n\n"
+  msg += "Generators are defined in DocumentKeywordsGenerator::GENERATORS\n"
+
+
+  Log.error(msg)
+  raise msg
+end
+
+
+
 ArchivesSpaceService.settings.scheduler.every("#{AppConfig[:onbase_keyword_job_interval_seconds]}s", :allow_overlapping => false) do
   OnbaseKeywordJob.process_jobs
 end

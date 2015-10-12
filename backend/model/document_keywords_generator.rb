@@ -1,6 +1,5 @@
 require 'date'
 
-# FIXME: Do a sanity check on startup to make sure generators aren't missing
 class DocumentKeywordsGenerator
 
   Keyword = Struct.new(:label, :keyword)

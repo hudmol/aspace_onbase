@@ -120,8 +120,8 @@ class ArchivesSpaceService < Sinatra::Base
     .permissions([:update_onbase_record])
     .returns([200, :deleted]) \
   do
-    onbase_document = OnbaseDocument.to_jsonmodel(params[:id])
-    OnbaseDocument.delete_existing_relationships(onbase_document, true)
+    onbase_document = OnbaseDocument.get_or_die(params[:id])
+    onbase_document.unlink
     deleted_response(params[:id])
   end
 

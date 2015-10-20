@@ -108,7 +108,7 @@ class DocumentKeywordsGenerator
     keywords = {}
 
     fields_to_generate.each {|field|
-      ASUtils.wrap(generator_for(field[:code]).call(containing_jsonmodel)).each do |keyword|
+      ASUtils.wrap(generator_for(field[:generator]).call(containing_jsonmodel)).each do |keyword|
         keywords[keyword.label] = keyword.keyword
       end
     }

@@ -34,9 +34,9 @@ DocumentKeywordDefinitions::DOCUMENT_TYPE_DEFINITIONS.each do |type, definition|
   definition[:fields].each do |field|
     if field.fetch(:type) == 'generated'
       begin
-        generator.generator_for(field.fetch(:code))
+        generator.generator_for(field.fetch(:generator))
       rescue
-        missing << {:document_type => type, :code => field.fetch(:code), :exception => $!}
+        missing << {:document_type => type, :generator => field.fetch(:generator), :exception => $!}
       end
     end
   end
@@ -45,7 +45,7 @@ end
 if !missing.empty?
   msg = "Missing a keyword generator for the following:\n\n"
   missing.each do |missing|
-    msg += "  * Document type #{missing[:document_type]}, field code #{missing[:code]} (#{missing[:exception]})\n"
+    msg += "  * Document type #{missing[:document_type]}, field generator #{missing[:generator]} (#{missing[:exception]})\n"
   end
   msg += "\n\n"
   msg += "Generators are defined in DocumentKeywordsGenerator::GENERATORS\n"

@@ -158,10 +158,10 @@ class OnbaseDocumentsController < ApplicationController
 
     definitions.definitions_for_document_type(doctype).each do |field|
       if field[:type] != "generated"
-        value = keywords[field[:code]]
+        value = keywords[field[:keyword]]
 
         if value.blank?
-          errors << I18n.t("plugins.onbase_document._frontend.messages.keyword_required", :code => I18n.t("plugins.onbase_document_keyword.#{field[:code]}"))
+          errors << I18n.t("plugins.onbase_document._frontend.messages.keyword_required", :code => I18n.t("plugins.onbase_document_keyword.#{field[:keyword]}"))
         end
       end
     end

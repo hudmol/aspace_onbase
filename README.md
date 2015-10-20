@@ -70,10 +70,10 @@ For example:
      "SPCL-Preservation Photos" => {
        :supported_records => [:event],
        :fields => [
-         {:type => "text", :code => :conservation_number},
-         {:type => "generated", :code => :event_system_id},
-         {:type => "generated", :code => :linked_record_system_id},
-         {:type => "generated", :code => :record_identifier},
+         {:type => "text", :keyword => :conservation_number},
+         {:type => "generated", :generator => :event_system_id},
+         {:type => "generated", :generator => :linked_record_system_id},
+         {:type => "generated", :generator => :record_identifier},
        ]
      },
 
@@ -81,14 +81,33 @@ This entry defines the "SPCL-Preservation Photos" document type which is only av
 records. The document type requires one user defined keyword "conservation_number" and three system
 generated keywords "event_system_id", "linked_record_system_id" and "record_identifier".
 
-System generated keywords are generated upon save of the record containing the onbase document, and 
-the mapping of the code to the logic used to extract the keyword value from the record can be found 
-in `backend/model/document_keywords_generator.rb`. For example, `:event_system_id` maps to logic to
-extract the event's database ID with a label "Event ID":
+System generated keywords are generated upon save of the record
+containing the onbase document.  Each `:generator` entry has a
+corresponding definition in
+`backend/model/document_keywords_generator.rb` that defines the logic
+for producing the keywords. For example, `:event_system_id` maps to
+logic to extract the event's database ID with a label "Event ID":
 
      GENERATORS = {
-         :event_system_id => proc {|record| Keyword.new("Event ID", DocumentKeywordsGenerator.just_id(record['uri']))},
+         :event_system_id => proc {|record| Keyword.new(:event_id_keyword, DocumentKeywordsGenerator.just_id(record['uri']))},
          ...
 
 Once generated, these `Keyword` objects are then serialized to JSON and formatted to match the
 keyword structure required by the ROBI service.
+
+### Mapping keyword codes to Onbase keywords
+
+As discussed, keywords are produced via two means:
+
+  * By "generated" field definitions.  The generator code is invoked,
+    and produces a `Keyword` instance to be sent to OnBase.
+
+  * By "text" field definitions.  These correspond to text input boxes
+    that are filled in manually by users.  These get sent through
+    directly to OnBase as keywords.
+
+In both cases, we end up with a symbol representing a keyword that
+should be mapped to a string from the OnBase controlled vocabulary.
+These mappings are located in the `keywords.yml` file at the top of
+the plugin distribution.  If new keywords are added to OnBase they'll
+need to be added to this file too.

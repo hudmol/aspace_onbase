@@ -1,11 +1,18 @@
 <% @definition.each do |field| %>
   <div class="form-group <% if field[:type] == 'text' %> required<% end %>">
-    <label class="control-label" for="onbase_document_keywords__<%= field[:code] %>_">
-      <%= I18n.t("plugins.onbase_document_keyword.#{field[:code]}") %>
+    <% if field[:type] == 'generator' %>
+    <label class="control-label" for="onbase_document_keywords__<%= field[:generator] %>_">
+      <%= I18n.t("plugins.onbase_document_keyword.#{field[:generator]}") %>
     </label>
+    <% else %>
+    <label class="control-label" for="onbase_document_keywords__<%= field[:keyword] %>_">
+      <%= I18n.t("plugins.onbase_document_keyword.#{field[:keyword]}") %>
+    </label>
+    <% end %>
+
     <% if field[:type] == 'text' %>
       <div>
-        <input class="form-control" type="text" id="onbase_document_keywords__<%= field[:code] %>_" name="keywords[<%= field[:code] %>]" required />
+        <input class="form-control" type="text" id="onbase_document_keywords__<%= field[:keyword] %>_" name="keywords[<%= field[:keyword] %>]" required />
       </div>
     <% elsif field[:type] == 'generated' %>
       <div class="label-only">

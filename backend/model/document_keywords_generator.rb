@@ -8,7 +8,7 @@ class DocumentKeywordsGenerator
     Integer(JSONModel.parse_reference(uri)[:id])
   end
 
-  def self.format_date(event_subrecord)
+  def self.format_event_date(event_subrecord)
     if event_subrecord['timestamp']
       event_subrecord['timestamp']
     else
@@ -22,6 +22,12 @@ class DocumentKeywordsGenerator
     end
   end
 
+
+  def self.format_accession_date(accession_subrecord)
+    accession_subrecord['accession_date']
+  end
+
+
   def self.format_identifier(record)
     record['ref_id'] ||
       record['component_id'] ||
@@ -32,11 +38,11 @@ class DocumentKeywordsGenerator
 
 
   GENERATORS = {
-    :accession_system_id => proc {|record| Keyword.new("Accession ID", DocumentKeywordsGenerator.just_id(record['uri']))},
-    :agent_name => proc {|record| Keyword.new("Agent Name", Array(record['linked_agents']).map {|agent| agent['_resolved']['title']}.join("; "))},
-    :current_date => proc {|record| Keyword.new("Date", Date.today.iso8601) },
-    :event_date => proc {|record| Keyword.new("Date", DocumentKeywordsGenerator.format_date(record)) },
-    :event_system_id => proc {|record| Keyword.new("Event ID", DocumentKeywordsGenerator.just_id(record['uri']))},
+    :accession_system_id => proc {|record| Keyword.new(:accession_id_keyword, DocumentKeywordsGenerator.just_id(record['uri']))},
+    :agent_name => proc {|record| Keyword.new(:agent_name_keyword, Array(record['linked_agents']).map {|agent| agent['_resolved']['title']}.join("; "))},
+    :event_processing_plan_date => proc {|record| Keyword.new(:event_processing_plan_date_keyword, DocumentKeywordsGenerator.format_event_date(record)) },
+    :accession_date => proc {|record| Keyword.new(:accession_date_keyword, DocumentKeywordsGenerator.format_accession_date(record)) },
+    :event_system_id => proc {|record| Keyword.new(:event_id_keyword, DocumentKeywordsGenerator.just_id(record['uri']))},
 
     :linked_record_system_id => proc {|record|
       Array(record['linked_records']).map {|linked|
@@ -44,11 +50,11 @@ class DocumentKeywordsGenerator
 
         label = case parsed[:type]
                 when 'accession'
-                  "Accession ID"
+                  :accession_id_keyword
                 when 'resource'
-                  "Resource ID"
+                  :resource_id_keyword
                 when 'archival_object'
-                  "Object ID"
+                  :object_id_keyword
                 end
 
         if label
@@ -60,7 +66,7 @@ class DocumentKeywordsGenerator
     :agent_system_id => proc {|record|
       linked_agent = Array(record['linked_agents'])[0]
       if linked_agent
-        Keyword.new("Agent ID", DocumentKeywordsGenerator.just_id(linked_agent['ref']))
+        Keyword.new(:agent_id_keyword, DocumentKeywordsGenerator.just_id(linked_agent['ref']))
       end
     },
 
@@ -68,9 +74,9 @@ class DocumentKeywordsGenerator
       Array(record['linked_records']).map {|linked|
         label = case linked['_resolved']['jsonmodel_type']
             when 'resource'
-              "Resource Identifier"
+              :resource_identifier_keyword
             when 'accession'
-              "Accession Identifier"
+              :accession_identifier_keyword
         end
 
         if label
@@ -79,7 +85,7 @@ class DocumentKeywordsGenerator
       }.compact
     },
 
-    "SPCL-ExampleAlpha250" => proc {|record|  Keyword.new("SPCL-ExampleAlpha250", DocumentKeywordsGenerator.just_id(record['uri']))},
+    :example_alpha_250_keyword => proc {|record| Keyword.new(:example_alpha_250_keyword, DocumentKeywordsGenerator.just_id(record['uri']))},
   }
 
 

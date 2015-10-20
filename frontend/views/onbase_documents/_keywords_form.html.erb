@@ -1,7 +1,7 @@
 <% @definition.each do |field| %>
   <div class="form-group <% if field[:type] == 'text' %> required<% end %>">
     <label class="control-label" for="onbase_document_keywords__<%= field[:code] %>_">
-      <%= I18n.t("plugins.onbase_document_keyword.#{field[:code]}", :default => field[:code]) %>
+      <%= I18n.t("plugins.onbase_document_keyword.#{field[:code]}") %>
     </label>
     <% if field[:type] == 'text' %>
       <div>

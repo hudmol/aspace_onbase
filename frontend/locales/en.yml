@@ -44,16 +44,15 @@ en:
           unlinked: OnBase Document is unlinked
 
     onbase_document_keyword:
-      linked_record_system_id: Record ID
-      agent_system_id: Agent ID
-      agent_name: Agent Name
-      record_identifier: Record Identifier
-      accession_system_id: Accession ID
-      event_system_id: Event ID
-      event_date: Event Date
-      current_date: Current Date
-      conservation_number: Conservation Number
-      catalog_location: Catalog Location
+      linked_record_system_id: SPCL Record ID
+      agent_system_id: SPCL Agent ID
+      agent_name: SPCL Agent Name
+      record_identifier: SPCL Record Identifier
+      accession_system_id: SPCL Accession ID
+      event_system_id: SPCL Event ID
+      accession_date: SPCL Accession Date
+      event_processing_plan_date: SPCL Processing Plan Date
+
     actions:
       show_all: Show All
   search_results:

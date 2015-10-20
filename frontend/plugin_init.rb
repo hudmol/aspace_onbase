@@ -3,8 +3,12 @@ ArchivesSpace::Application.config.paths['config/routes'].concat(my_routes)
 
 require_relative "../lib/document_keyword_definitions"
 require_relative "../lib/file_buffer"
+require_relative "../lib/keyword_name_mapper"
+
 
 Rails.application.config.after_initialize do
+
+  KeywordNameMapper.configure_i18n
 
   ActionView::PartialRenderer.class_eval do
     alias_method :render_pre_aspace_onbase, :render

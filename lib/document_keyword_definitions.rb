@@ -43,38 +43,38 @@ class DocumentKeywordDefinitions
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :code => :linked_record_system_id},
-        {:type => "generated", :code => :event_date},
+        {:type => "generated", :code => :event_processing_plan_date},
         {:type => "generated", :code => :event_system_id},
         {:type => "generated", :code => :record_identifier},
-        {:type => "text", :code => :catalog_location},
+        {:type => "text", :code => :catalog_location_keyword},
       ]},
 
     "SPCL-Accession Snapshot" => {
       :supported_records => [:accession],
       :fields => [
         {:type => "generated", :code => :accession_system_id},
-        {:type => "generated", :code => :current_date},
+        {:type => "generated", :code => :accession_date},
         {:type => "generated", :code => :record_identifier},
       ]},
 
     "SPCL-Preservation Photos" => {
       :supported_records => [:event],
       :fields => [
-        {:type => "text", :code => :conservation_number},
+        {:type => "text", :code => :conservation_number_keyword},
         {:type => "generated", :code => :event_system_id},
         {:type => "generated", :code => :linked_record_system_id},
         {:type => "generated", :code => :record_identifier},
-        {:type => "text", :code => :catalog_location},
+        {:type => "text", :code => :catalog_location_keyword},
       ]},
 
     "SPCL-Preservation Documentation" => {
       :supported_records => [:event],
       :fields => [
-        {:type => "text", :code => :conservation_number},
+        {:type => "text", :code => :conservation_number_keyword},
         {:type => "generated", :code => :event_system_id},
         {:type => "generated", :code => :linked_record_system_id},
         {:type => "generated", :code => :record_identifier},
-        {:type => "text", :code => :catalog_location},
+        {:type => "text", :code => :catalog_location_keyword},
       ]},
 
     "SPCL-Missing Items record" => {
@@ -100,7 +100,7 @@ class DocumentKeywordDefinitions
         {:type => "generated", :code => :event_system_id},
         {:type => "generated", :code => :linked_record_system_id},
         {:type => "generated", :code => :record_identifier},
-        {:type => "text", :code => :catalog_location},
+        {:type => "text", :code => :catalog_location_keyword},
       ]},
 
     "SPCL-Patron Registration Forms" => {
@@ -141,8 +141,8 @@ class DocumentKeywordDefinitions
     "SPCL - Example Document Type" => {
       :supported_records => [:event, :accession],
       :fields => [
-        {:type => "text", :code => "SPCL-ExampleAlpha20"},
-        {:type => "generated", :code => "SPCL-ExampleAlpha250"}
+        {:type => "text", :code => :example_alpha_20_keyword},
+        {:type => "generated", :code => :example_alpha_250_keyword}
       ]
     }
   }

@@ -24,6 +24,7 @@ class OnbaseClient
 
 
   def upload(file_stream, file_name, content_type, doc_type, keywords = {})
+
     upload_url = url('', {"documentTypeName" => doc_type})
     req = Net::HTTP::Post::Multipart.new(upload_url.request_uri,
                                          "file" => UploadIO.new(file_stream, content_type, file_name),
@@ -210,7 +211,7 @@ class OnbaseClient
   def format_keywords(keywords)
     keywords.map do |name, value|
       {
-        "keywordTypeName" => name,
+        "keywordTypeName" => KeywordNameMapper.translate(name),
         "keywordValue" => value
       }
     end

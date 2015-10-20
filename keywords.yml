@@ -1,0 +1,15 @@
+keywords:
+    accession_identifier_keyword: SPCL Accession Identifier
+    accession_id_keyword: SPCL Accession ID
+    agent_id_keyword: SPCL Agent ID
+    agent_name_keyword: SPCL Agent Name
+    accession_date_keyword: SPCL Accession Date
+    catalog_location_keyword: SPCL Catalog Location
+    conservation_number_keyword: SPCL Conservation Number
+    event_id_keyword: SPCL Event ID
+    example_alpha_250_keyword: SPCL ExampleAlpha250
+    example_alpha_20_keyword: SPCL ExampleAlpha20
+    object_id_keyword: SPCL Archival Object ID
+    resource_identifier_keyword: SPCL Resource Identifier
+    resource_id_keyword: SPCL Resource ID
+    event_processing_plan_date_keyword: SPCL Processing Plan Date

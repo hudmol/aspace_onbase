@@ -4,7 +4,11 @@ Permission.define("manage_onbase_record",
 
 
 require_relative "../lib/document_keyword_definitions"
+require_relative "../lib/keyword_name_mapper"
 require_relative "../lib/file_buffer"
+
+KeywordNameMapper.configure_i18n
+
 
 # Hit these early just to make sure they're set
 settings = [:onbase_robi_url, :onbase_robi_username, :onbase_robi_password,

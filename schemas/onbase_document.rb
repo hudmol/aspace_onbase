@@ -37,6 +37,8 @@
           }
         }
       },
+      "deletion_pending" => {"type" => "boolean", "readonly" => "true", "default" => false},
+      "new_and_unlinked" => {"type" => "boolean", "readonly" => "true", "default" => true}
     },
   },
 }

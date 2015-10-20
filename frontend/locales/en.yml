@@ -41,8 +41,9 @@ en:
           type_not_supported: "Type not supported: %{type}"
           no_keywords: There are no keywords stored in OnBase for this document
           delete: This action will queue the OnBase Document to be deleted from both ArchivesSpace and OnBase. This action cannot be undone.
-          unlinked: OnBase Document is unlinked
-
+          new_and_unlinked: OnBase Document has not been linked to a record (and cannot be deleted)
+          deletion_pending: This OnBase Document is no longer linked to a record and will be removed when the delete job is next run.
+          unlinked_document: New, unlinked Record. This OnBase Document has not yet been linked to a record. When adding a new OnBase Document, click 'link to an existing OnBase Document' to search for and select this record.
     onbase_document_keyword:
       linked_record_system_id: SPCL Record ID
       agent_system_id: SPCL Agent ID
@@ -60,5 +61,17 @@ en:
       document_type_u_ustr: Document Type
       mime_type_u_ustr: MIME-type
       linked_to_record_u_ubool: Linked to Record
+      deletion_pending_u_ubool: Deletion Pending
+      new_and_unlinked_u_ubool: New and Unlinked
+    filter_terms:
+      linked_to_record_u_ubool:
+        "true": "Yes"
+        "false": "No"
+      deletion_pending_u_ubool:
+        "true": "Yes"
+        "false": "No"
+      new_and_unlinked_u_ubool:
+        "true": "Yes"
+        "false": "No"
   onbase_document:
     <<: *onbase_document_attributes

@@ -14,9 +14,13 @@
       }
      %>
 
-      <% if @onbase_document['linked_record'].blank? || @onbase_document['linked_record']['ref'].blank? %>
+      <% if @onbase_document['deletion_pending'] %>
         <div class="alert alert-warning">
-          <%= I18n.t("plugins.onbase_document._frontend.messages.unlinked") %>
+          <%= I18n.t("plugins.onbase_document._frontend.messages.deletion_pending") %>
+        </div>
+      <% elsif @onbase_document['new_and_unlinked'] %>
+        <div class="alert alert-warning">
+          <%= I18n.t("plugins.onbase_document._frontend.messages.new_and_unlinked") %>
         </div>
       <% end %>
 

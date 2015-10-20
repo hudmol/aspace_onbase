@@ -7,14 +7,27 @@ class OnbaseDocument < Sequel::Model(:onbase_document)
   set_model_scope :repository
 
   def display_string
-    "#{filename} - #{document_type} [#{onbase_id}] :: #{linked_record_display}"
+    (deletion_pending? ? "[Deletion Pending] " : "") + "#{filename} - #{document_type} [#{onbase_id}] :: #{linked_record_display}"
   end
+
+
+  def deletion_pending?
+    linked_record_uri.nil? && was_linked == 1
+  end
+
+
+  def new_and_unlinked?
+    linked_record_uri.nil? && was_linked == 0
+  end
+
 
   def self.sequel_to_jsonmodel(objs, opts = {})
     jsons = super
 
     jsons.zip(objs).each do |json, obj|
       json['display_string'] = obj.display_string
+      json['deletion_pending'] = obj.deletion_pending?
+      json['new_and_unlinked'] = obj.new_and_unlinked?
       json['linked_record'] = {
         'ref' => obj.linked_record_uri
       }

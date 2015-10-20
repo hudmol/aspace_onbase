@@ -4,7 +4,7 @@ class OnbaseDocumentsController < ApplicationController
                       "manage_onbase_record" => [:new, :create, :keywords_form, :unlink]
 
 
-  SEARCH_FACETS = ["document_type_u_ustr", "mime_type_u_ustr", "linked_to_record_u_ubool"]
+  SEARCH_FACETS = ["document_type_u_ustr", "mime_type_u_ustr", "linked_to_record_u_ubool", "deletion_pending_u_ubool", "new_and_unlinked_u_ubool"]
 
 
   def index

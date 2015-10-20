@@ -50,6 +50,18 @@ Rails.application.config.after_initialize do
   end
 
 
+  SearchResultData.class_eval do
+    alias_method :facet_label_string_pre_aspace_onbase, :facet_label_string
+    def facet_label_string(facet_group, facet)
+      if ["linked_to_record_u_ubool", "deletion_pending_u_ubool", "new_and_unlinked_u_ubool"].include?(facet_group)
+        return I18n.t("search_results.filter_terms.#{facet_group}.#{facet.to_s}", :default => facet.to_s)
+      end
+
+      facet_label_string_pre_aspace_onbase(facet_group, facet)
+    end
+  end
+
+
   # force load our JSONModels so the are registered rather than lazy initialised
   # we need this for parse_reference to work
   JSONModel(:onbase_document)

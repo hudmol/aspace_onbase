@@ -1,7 +1,7 @@
 class DocumentKeywordDefinitions
 
   DOCUMENT_TYPE_DEFINITIONS = {
-    "SPCL-Agent Correspondence" => {
+    "SPCL - Agent Correspondence" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
@@ -9,17 +9,7 @@ class DocumentKeywordDefinitions
         {:type => "generated", :generator => :agent_system_id},
       ]},
 
-    "SPCL-Deed" => {
-      :supported_records => [:event],
-      :fields => [
-        {:type => "generated", :generator => :agent_name},
-        {:type => "generated", :generator => :event_system_id},
-        {:type => "generated", :generator => :linked_record_system_id},
-        {:type => "generated", :generator => :agent_system_id},
-        {:type => "generated", :generator => :record_identifier},
-      ]},
-
-    "SPCL-Transfer Receipt" => {
+    "SPCL - Deed" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
@@ -29,7 +19,7 @@ class DocumentKeywordDefinitions
         {:type => "generated", :generator => :record_identifier},
       ]},
 
-    "SPCL-Dealer Object Description" => {
+    "SPCL - Transfer Receipt" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
@@ -39,7 +29,17 @@ class DocumentKeywordDefinitions
         {:type => "generated", :generator => :record_identifier},
       ]},
 
-    "SPCL-Processing Plan" => {
+    "SPCL - Dealer Object Description" => {
+      :supported_records => [:event],
+      :fields => [
+        {:type => "generated", :generator => :agent_name},
+        {:type => "generated", :generator => :event_system_id},
+        {:type => "generated", :generator => :linked_record_system_id},
+        {:type => "generated", :generator => :agent_system_id},
+        {:type => "generated", :generator => :record_identifier},
+      ]},
+
+    "SPCL - Processing Plan" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :linked_record_system_id},
@@ -49,7 +49,7 @@ class DocumentKeywordDefinitions
         {:type => "text", :keyword => :catalog_location_keyword},
       ]},
 
-    "SPCL-Accession Snapshot" => {
+    "SPCL - Accession Snapshot" => {
       :supported_records => [:accession],
       :fields => [
         {:type => "generated", :generator => :accession_system_id},
@@ -57,7 +57,7 @@ class DocumentKeywordDefinitions
         {:type => "generated", :generator => :record_identifier},
       ]},
 
-    "SPCL-Preservation Photos" => {
+    "SPCL - Preservation Photo" => {
       :supported_records => [:event],
       :fields => [
         {:type => "text", :keyword => :conservation_number_keyword},
@@ -67,7 +67,7 @@ class DocumentKeywordDefinitions
         {:type => "text", :keyword => :catalog_location_keyword},
       ]},
 
-    "SPCL-Preservation Documentation" => {
+    "SPCL - Preservation Documentation" => {
       :supported_records => [:event],
       :fields => [
         {:type => "text", :keyword => :conservation_number_keyword},
@@ -77,7 +77,7 @@ class DocumentKeywordDefinitions
         {:type => "text", :keyword => :catalog_location_keyword},
       ]},
 
-    "SPCL-Missing Items record" => {
+    "SPCL - Missing Items Record" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :event_system_id},
@@ -85,7 +85,7 @@ class DocumentKeywordDefinitions
         {:type => "generated", :generator => :record_identifier},
       ]},
 
-    "SPCL-Oral History Release Forms" => {
+    "SPCL - Oral History Release Form" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
@@ -94,7 +94,7 @@ class DocumentKeywordDefinitions
         {:type => "generated", :generator => :record_identifier},
       ]},
 
-    "SPCL-Deaccession record" => {
+    "SPCL - Deaccession Record" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :event_system_id},
@@ -103,35 +103,35 @@ class DocumentKeywordDefinitions
         {:type => "text", :keyword => :catalog_location_keyword},
       ]},
 
-    "SPCL-Patron Registration Forms" => {
+    "SPCL - Patron Registration Form" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :event_system_id},
       ]},
 
-    "SPCL-Permission to Publish" => {
+    "SPCL - Permission to Publish" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :event_system_id},
       ]},
 
-    "SPCL-Loan Agreement" => {
+    "SPCL - Loan Agreement" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :event_system_id},
       ]},
 
-    "SPCL-Facilities Report" => {
+    "SPCL - Facilities Report" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :event_system_id},
       ]},
 
-    "SPCL-Insurance Valuations" => {
+    "SPCL - Insurance Valuation" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :agent_name},

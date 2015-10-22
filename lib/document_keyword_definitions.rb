@@ -122,6 +122,7 @@ class DocumentKeywordDefinitions
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :event_system_id},
+        {:type => "date", :keyword => :load_end_date_keyword},
       ]},
 
     "SPCL - Facilities Report" => {

@@ -114,7 +114,10 @@ OnBaseRecordForm.prototype.setupForm = function() {
   });
 
   self.$form.find("#onbase_document_document_type_").on("change", function() {
-    self.$container.find("#onBaseKeywords").load(self.keywordsFormURL, {doctype: $(this).val()});
+    self.$container.find("#onBaseKeywords").load(self.keywordsFormURL, {doctype: $(this).val()},
+                                                 function () {
+                                                   $(document).trigger("initdatefields.aspace", [self.$container]);
+                                                 });
   });
 };
 

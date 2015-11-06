@@ -1,5 +1,5 @@
 <% @definition.each do |field| %>
-  <div class="form-group <% if field[:type] == 'text' %> required<% end %>">
+  <div class="form-group <% if field[:type] != 'generated' %> required<% end %>">
     <% if field[:type] == 'generated' %>
     <label class="control-label" for="onbase_document_keywords__<%= field[:generator] %>_">
       <%= I18n.t("plugins.onbase_document_keyword.#{field[:generator]}") %>
@@ -13,6 +13,20 @@
     <% if field[:type] == 'text' %>
       <div>
         <input class="form-control" type="text" id="onbase_document_keywords__<%= field[:keyword] %>_" name="keywords[<%= field[:keyword] %>]" required />
+      </div>
+    <% elsif field[:type] == 'date' %>
+      <div class="row">
+          <div class="col-sm-4">
+              <input class="date-field form-control"
+                     type="text"
+                     data-format = "yyyy-mm-dd"
+                     data-date = <%= Date.today.strftime('%Y-%m-%d') %>
+                     data-autoclose = true
+                     data-force-parse = false
+                     id="onbase_document_keywords__<%= field[:keyword] %>_"
+                     name="keywords[<%= field[:keyword] %>]" 
+                     required />
+          </div>
       </div>
     <% elsif field[:type] == 'generated' %>
       <div class="label-only">

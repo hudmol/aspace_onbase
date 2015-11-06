@@ -14,4 +14,4 @@ keywords:
     resource_identifier_keyword: SPCL Resource Identifier
     resource_id_keyword: SPCL Resource ID
     event_processing_plan_date_keyword: SPCL Processing Plan Date
-    load_end_date_keyword: SPCL Loan End Date
+    loan_end_date_keyword: SPCL Loan End Date

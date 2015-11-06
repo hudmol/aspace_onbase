@@ -38,6 +38,16 @@ class DocumentKeywordDefinitions
         {:type => "generated", :generator => :agent_system_id},
         {:type => "generated", :generator => :record_identifier},
       ]},
+    
+    "SPCL - Dealer Invoice" => {
+      :supported_records => [:event],
+      :fields => [
+        {:type => "generated", :generator => :agent_name},
+        {:type => "generated", :generator => :event_system_id},
+        {:type => "generated", :generator => :linked_record_system_id},
+        {:type => "generated", :generator => :agent_system_id},
+        {:type => "generated", :generator => :record_identifier},
+      ]},
 
     "SPCL - Processing Plan" => {
       :supported_records => [:event],
@@ -110,7 +120,7 @@ class DocumentKeywordDefinitions
         {:type => "generated", :generator => :event_system_id},
       ]},
 
-    "SPCL - Permission to Publish" => {
+    "SPCL - Permission to Publish Form" => {
       :supported_records => [:event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
@@ -122,7 +132,7 @@ class DocumentKeywordDefinitions
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :event_system_id},
-        {:type => "date", :keyword => :load_end_date_keyword},
+        {:type => "date", :keyword => :loan_end_date_keyword},
       ]},
 
     "SPCL - Facilities Report" => {

@@ -247,3 +247,9 @@ $(".onbase-document-readonly-container").each(function() {
   new OnBaseRecordReadOnlyView($(this));
 });
 });
+
+$(document).bind("loadedrecordform.aspace", function(event, $container) {
+  if ($container.is(":not(.initialised)")) {
+    new OnBaseRecordReadOnlyView($container);
+  }
+});

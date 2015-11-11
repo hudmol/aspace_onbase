@@ -140,7 +140,7 @@ class DocumentKeywordDefinitions
       ]},
 
     "SPCL - Example Document Type" => {
-      :supported_records => [:event, :accession],
+      :supported_records => [:event, :accession, :archival_object],
       :fields => [
         {:type => "text", :keyword => :example_alpha_20_keyword},
         {:type => "date", :keyword => :example_date_keyword},

@@ -2,15 +2,17 @@ class DocumentKeywordDefinitions
 
   DOCUMENT_TYPE_DEFINITIONS = {
     "SPCL - Agent Correspondence" => {
-      :supported_records => [:event],
+      :supported_records => [:archival_object, :event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :event_system_id},
         {:type => "generated", :generator => :agent_system_id},
+        {:type => "generated", :generator => :linked_record_system_id},
+        {:type => "generated", :generator => :record_identifier}#
       ]},
 
     "SPCL - Deed" => {
-      :supported_records => [:event],
+      :supported_records => [:archival_object, :event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :event_system_id},
@@ -30,7 +32,7 @@ class DocumentKeywordDefinitions
       ]},
 
     "SPCL - Dealer Object Description" => {
-      :supported_records => [:event],
+      :supported_records => [:archival_object, :event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :event_system_id},
@@ -40,7 +42,7 @@ class DocumentKeywordDefinitions
       ]},
     
     "SPCL - Dealer Invoice" => {
-      :supported_records => [:event],
+      :supported_records => [:archival_object, :event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :event_system_id},
@@ -96,7 +98,7 @@ class DocumentKeywordDefinitions
       ]},
 
     "SPCL - Oral History Release Form" => {
-      :supported_records => [:event],
+      :supported_records => [:archival_object, :event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :event_system_id},
@@ -105,7 +107,7 @@ class DocumentKeywordDefinitions
       ]},
 
     "SPCL - Deaccession Record" => {
-      :supported_records => [:event],
+      :supported_records => [:archival_object, :event],
       :fields => [
         {:type => "generated", :generator => :event_system_id},
         {:type => "generated", :generator => :linked_record_system_id},
@@ -121,10 +123,12 @@ class DocumentKeywordDefinitions
       ]},
 
     "SPCL - Permission to Publish Form" => {
-      :supported_records => [:event],
+      :supported_records => [:archival_object, :event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :event_system_id},
+        {:type => "generated", :generator => :linked_record_system_id},
+        {:type => "generated", :generator => :record_identifier},
       ]},
 
     "SPCL - Loan Agreement" => {

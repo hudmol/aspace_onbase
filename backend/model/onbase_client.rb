@@ -80,13 +80,12 @@ class OnbaseClient
       req['Content-type'] = 'text/json'
       req.body = json
       req.basic_auth @username, @password
-
+      Log.debug("body: #{json.inspect}")
       response = http.request(req)
 
       if response.code !~ /^2/
         raise ConflictException.new("Failure in PUT request to onbase: #{response.body}")
       end
-
       response
     end
   end
@@ -120,9 +119,12 @@ class OnbaseClient
 
   def add_to_keywords(onbase_id, keywords)
     onbase_keywords = get_keywords(onbase_id)
+    
+    # we now preference the ArchivesSpace keywords
+    merged = onbase_keywords.merge('keywords' => format_keywords(keywords))
 
-    merged = onbase_keywords.merge('keywords' => merge_keywords(onbase_keywords['keywords'], format_keywords(keywords)))
     put_keywords(onbase_id, merged)
+    
   end
 
 
@@ -201,10 +203,13 @@ class OnbaseClient
 
 
   def merge_keywords(*keywords)
+    # 2015-11-13 - Joshua Shaw - I believe this is now uneccessary.
     # Previously we had a .reverse before the uniq to favor keeping the more
     # recent keywords, but this messes up the "current_date" keyword, so we took
-    # it out.  Now when a keyword is set it stays set and can't be overridden.
+    # it out.  Now when a keyword is set it stays set and can't be overridden.    
+    
     keywords.reduce {|k1, k2| k1 + k2}.uniq {|k| k['keywordTypeName']}
+
   end
 
 

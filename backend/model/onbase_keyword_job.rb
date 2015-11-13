@@ -4,7 +4,7 @@ class OnbaseKeywordJob < Sequel::Model(:onbase_keyword_job)
 
   def self.create(onbase_document, keywords, user)
     super(:onbase_id => onbase_document.onbase_id,
-          :keywords => keywords.to_json,
+          :keywords => keywords.to_a.to_json, #convert hash to array first to preserve the duplicate keys that may be found in the hash
           :status => "new",
           :user => user,
           :system_mtime => Time.now)

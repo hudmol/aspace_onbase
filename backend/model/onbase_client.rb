@@ -80,7 +80,6 @@ class OnbaseClient
       req['Content-type'] = 'text/json'
       req.body = json
       req.basic_auth @username, @password
-      Log.debug("body: #{json.inspect}")
       response = http.request(req)
 
       if response.code !~ /^2/

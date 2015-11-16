@@ -39,7 +39,13 @@ class DocumentKeywordsGenerator
 
   GENERATORS = {
     :accession_system_id => proc {|record| Keyword.new(:accession_id_keyword, DocumentKeywordsGenerator.just_id(record['uri']))},
-    :agent_name => proc {|record| Keyword.new(:agent_name_keyword, Array(record['linked_agents']).map {|agent| agent['_resolved']['title']}.join("; "))},
+    :agent_name => proc {|record|
+      Array(record['linked_agents']).map {|agent|
+        if agent['_resolved']['title']
+          Keyword.new(:agent_name_keyword, agent['_resolved']['title'])
+        end
+      }
+    },
     :event_processing_plan_date => proc {|record| Keyword.new(:event_processing_plan_date_keyword, DocumentKeywordsGenerator.format_event_date(record)) },
     :accession_date => proc {|record| Keyword.new(:accession_date_keyword, DocumentKeywordsGenerator.format_accession_date(record)) },
     :event_system_id => proc {|record| Keyword.new(:event_id_keyword, DocumentKeywordsGenerator.just_id(record['uri']))},
@@ -64,10 +70,11 @@ class DocumentKeywordsGenerator
     },
 
     :agent_system_id => proc {|record|
-      linked_agent = Array(record['linked_agents'])[0]
-      if linked_agent
-        Keyword.new(:agent_id_keyword, DocumentKeywordsGenerator.just_id(linked_agent['ref']))
+      Array(record['linked_agents']).map {|agent|
+      if agent['ref']
+        Keyword.new(:agent_id_keyword, DocumentKeywordsGenerator.just_id(agent['ref']))
       end
+      }.compact
     },
 
     :record_identifier => proc {|record|
@@ -106,13 +113,16 @@ class DocumentKeywordsGenerator
                          select {|field| field[:type] == "generated"}
 
     keywords = {}
-
+    
+    # allow duplicate keys in the hash
+    keywords.compare_by_identity
+    
     fields_to_generate.each {|field|
       ASUtils.wrap(generator_for(field[:generator]).call(containing_jsonmodel)).each do |keyword|
-        keywords[keyword.label] = keyword.keyword
+        keywords[keyword.label.to_s] = keyword.keyword
       end
     }
-
+    
     keywords
   end
 

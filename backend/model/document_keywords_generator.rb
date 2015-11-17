@@ -54,7 +54,7 @@ class DocumentKeywordsGenerator
                   :event_id_keyword
                 when 'resource'
                   :resource_id_keyword
-                when 'accesssion'
+                when 'accession'
                   :accession_id_keyword
                 when 'archival_object'
                   :object_id_keyword

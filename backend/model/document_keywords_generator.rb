@@ -38,7 +38,6 @@ class DocumentKeywordsGenerator
 
 
   GENERATORS = {
-    :accession_system_id => proc {|record| Keyword.new(:accession_id_keyword, DocumentKeywordsGenerator.just_id(record['uri']))},
     :agent_name => proc {|record|
       Array(record['linked_agents']).map {|agent|
         if agent['_resolved']['title']
@@ -48,7 +47,23 @@ class DocumentKeywordsGenerator
     },
     :event_processing_plan_date => proc {|record| Keyword.new(:event_processing_plan_date_keyword, DocumentKeywordsGenerator.format_event_date(record)) },
     :accession_date => proc {|record| Keyword.new(:accession_date_keyword, DocumentKeywordsGenerator.format_accession_date(record)) },
-    :event_system_id => proc {|record| Keyword.new(:event_id_keyword, DocumentKeywordsGenerator.just_id(record['uri']))},
+    :parent_system_id => proc {|record|
+      Array(record['jsonmodel_type']).map {|type|
+        type_label = case type
+                when 'event'
+                  :event_id_keyword
+                when 'resource'
+                  :resource_id_keyword
+                when 'accesssion'
+                  :accession_id_keyword
+                when 'archival_object'
+                  :object_id_keyword
+                end
+        if type_label
+          Keyword.new(type_label, DocumentKeywordsGenerator.just_id(record['uri']))
+        end        
+      }.compact
+    },
 
     :linked_record_system_id => proc {|record|
       Array(record['linked_records']).map {|linked|

@@ -1,7 +1,7 @@
 require 'date'
 
 class DocumentKeywordsGenerator
-
+    
   Keyword = Struct.new(:label, :keyword)
 
   def self.just_id(uri)
@@ -11,7 +11,7 @@ class DocumentKeywordsGenerator
   def self.format_event_date(event_subrecord)
     if event_subrecord['timestamp']
       event_subrecord['timestamp']
-    else
+    elsif event_subrecord['date']
       date = event_subrecord['date']
 
       if date['begin'] || date['end']
@@ -19,12 +19,14 @@ class DocumentKeywordsGenerator
       else
         date['expression']
       end
+    else
+      date = DateTime.now
     end
   end
 
 
   def self.format_accession_date(accession_subrecord)
-    accession_subrecord['accession_date']
+    accession_subrecord['accession_date'] ? accession_subrecord['accession_date'] : DateTime.now
   end
 
 
@@ -34,8 +36,6 @@ class DocumentKeywordsGenerator
       (record['id_0'] && Identifiers.format((0...4).map {|i| record["id_#{i}"]})) ||
       record['uri']
   end
-
-
 
   GENERATORS = {
     :agent_name => proc {|record|
@@ -93,18 +93,33 @@ class DocumentKeywordsGenerator
     },
 
     :record_identifier => proc {|record|
-      Array(record['linked_records']).map {|linked|
-        label = case linked['_resolved']['jsonmodel_type']
-            when 'resource'
-              :resource_identifier_keyword
-            when 'accession'
-              :accession_identifier_keyword
-        end
-
-        if label
-          Keyword.new(label, DocumentKeywordsGenerator.format_identifier(linked['_resolved']))
-        end
-      }.compact
+      if record['jsonmodel_type'] == ('event' || 'archival_object')
+          Array(record['linked_records']).map {|linked|
+          label = case linked['_resolved']['jsonmodel_type']
+              when 'resource'
+                :resource_identifier_keyword
+              when 'accession'
+                :accession_identifier_keyword
+          end
+  
+          if label
+            Keyword.new(label, DocumentKeywordsGenerator.format_identifier(linked['_resolved']))
+          end
+        }.compact
+      # this isn't the best solution as it only returns the uri for these types
+      # better would be to find a nice way to grab the identifiers id_0, etc for the record
+      else
+          label = case record['jsonmodel_type']
+              when 'resource'
+                :resource_identifier_keyword
+              when 'accession'
+                :accession_identifier_keyword
+          end
+          
+          if label
+            Keyword.new(label, DocumentKeywordsGenerator.format_identifier(record))
+          end
+      end
     },
 
     :example_alpha_250_keyword => proc {|record| Keyword.new(:example_alpha_250_keyword, DocumentKeywordsGenerator.just_id(record['uri']))},
@@ -126,9 +141,11 @@ class DocumentKeywordsGenerator
 
     fields_to_generate = definitions.definitions_for_document_type(onbase_document['document_type']).
                          select {|field| field[:type] == "generated"}
+                         
+    non_generated_fields = definitions.definitions_for_document_type(onbase_document['document_type']).
+                        select{|field| field[:type] != "generated"}
 
     keywords = {}
-    
     # allow duplicate keys in the hash
     keywords.compare_by_identity
     
@@ -137,7 +154,11 @@ class DocumentKeywordsGenerator
         keywords[keyword.label.to_s] = keyword.keyword
       end
     }
-    
+    # find the keywords that will only be set on initial save since we will need to keep these when we fetch back from OnBase
+    non_generated_fields.each do |keyword|
+      keywords[:not_generated.to_s] = KeywordNameMapper.translate(keyword[:keyword])
+    end
+
     keywords
   end
 

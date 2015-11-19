@@ -8,7 +8,7 @@ class DocumentKeywordDefinitions
         {:type => "generated", :generator => :parent_system_id},
         {:type => "generated", :generator => :agent_system_id},
         {:type => "generated", :generator => :linked_record_system_id},
-        {:type => "generated", :generator => :record_identifier}#
+        {:type => "generated", :generator => :record_identifier}
       ]},
 
     "SPCL - Deed" => {
@@ -22,7 +22,7 @@ class DocumentKeywordDefinitions
       ]},
 
     "SPCL - Transfer Receipt" => {
-      :supported_records => [:event],
+      :supported_records => [:archival_object, :event],
       :fields => [
         {:type => "generated", :generator => :agent_name},
         {:type => "generated", :generator => :parent_system_id},
@@ -52,17 +52,19 @@ class DocumentKeywordDefinitions
       ]},
 
     "SPCL - Processing Plan" => {
-      :supported_records => [:event],
+      :supported_records => [:accession, :resource, :event],
       :fields => [
         {:type => "generated", :generator => :linked_record_system_id},
         {:type => "generated", :generator => :event_processing_plan_date},
         {:type => "generated", :generator => :parent_system_id},
         {:type => "generated", :generator => :record_identifier},
+        {:type => "generated", :generator => :agent_name},
+        {:type => "generated", :generator => :agent_system_id},
         {:type => "text", :keyword => :catalog_location_keyword},
       ]},
 
     "SPCL - Accession Snapshot" => {
-      :supported_records => [:accession],
+      :supported_records => [:accession, :archival_object],
       :fields => [
         {:type => "generated", :generator => :parent_system_id},
         {:type => "generated", :generator => :accession_date},
@@ -70,7 +72,7 @@ class DocumentKeywordDefinitions
       ]},
 
     "SPCL - Preservation Photo" => {
-      :supported_records => [:event],
+      :supported_records => [:archival_object, :event],
       :fields => [
         {:type => "text", :keyword => :conservation_number_keyword},
         {:type => "generated", :generator => :parent_system_id},
@@ -80,7 +82,7 @@ class DocumentKeywordDefinitions
       ]},
 
     "SPCL - Preservation Documentation" => {
-      :supported_records => [:event],
+      :supported_records => [:archival_object, :event],
       :fields => [
         {:type => "text", :keyword => :conservation_number_keyword},
         {:type => "generated", :generator => :parent_system_id},
@@ -107,7 +109,7 @@ class DocumentKeywordDefinitions
       ]},
 
     "SPCL - Deaccession Record" => {
-      :supported_records => [:archival_object, :event],
+      :supported_records => [:accession, :archival_object, :event],
       :fields => [
         {:type => "generated", :generator => :parent_system_id},
         {:type => "generated", :generator => :linked_record_system_id},

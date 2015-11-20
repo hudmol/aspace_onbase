@@ -144,7 +144,9 @@ class DocumentKeywordsGenerator
                          
     non_generated_fields = definitions.definitions_for_document_type(onbase_document['document_type']).
                         select{|field| field[:type] != "generated"}
-
+    
+    potential_date_fields = definitions.definitions_for_document_type(onbase_document['document_type']).
+                        select{|field| field[:type] == "generated" && field[:generator] =~ /date/ }
     keywords = {}
     # allow duplicate keys in the hash
     keywords.compare_by_identity
@@ -157,6 +159,10 @@ class DocumentKeywordsGenerator
     # find the keywords that will only be set on initial save since we will need to keep these when we fetch back from OnBase
     non_generated_fields.each do |keyword|
       keywords[:not_generated.to_s] = KeywordNameMapper.translate(keyword[:keyword])
+    end
+
+    potential_date_fields.each do |keyword|
+      keywords[:potential_date_keys.to_s] = KeywordNameMapper.translate(keyword[:generator])
     end
 
     keywords

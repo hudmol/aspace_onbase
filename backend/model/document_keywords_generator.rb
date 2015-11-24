@@ -36,6 +36,16 @@ class DocumentKeywordsGenerator
       (record['id_0'] && Identifiers.format((0...4).map {|i| record["id_#{i}"]})) ||
       record['uri']
   end
+  
+  def self.format_resource_identifier_from_uri(uri)
+    Resource.id_to_identifier(just_id(uri))
+  end
+  
+  # mimics Resource.id_to_identifier (above) for accessions
+  def self.format_accession_identifier_from_uri(uri)
+    accession = Accession[just_id(uri)]
+    [accession[:id_0], accession[:id_1], accession[:id_2], accession[:id_3]].compact.join("-")
+  end
 
   GENERATORS = {
     :agent_name => proc {|record|
@@ -93,8 +103,8 @@ class DocumentKeywordsGenerator
     },
 
     :record_identifier => proc {|record|
-      if record['jsonmodel_type'] == ('event' || 'archival_object')
-          Array(record['linked_records']).map {|linked|
+      if record['jsonmodel_type'] == 'event'
+        Array(record['linked_records']).map {|linked|
           label = case linked['_resolved']['jsonmodel_type']
               when 'resource'
                 :resource_identifier_keyword
@@ -106,19 +116,19 @@ class DocumentKeywordsGenerator
             Keyword.new(label, DocumentKeywordsGenerator.format_identifier(linked['_resolved']))
           end
         }.compact
-      # this isn't the best solution as it only returns the uri for these types
-      # better would be to find a nice way to grab the identifiers id_0, etc for the record
+        
+      elsif record['jsonmodel_type'] == 'archival_object'
+          Keyword.new(:resource_identifier_keyword, DocumentKeywordsGenerator.format_resource_identifier_from_uri(record['resource']['ref']))
+
       else
-          label = case record['jsonmodel_type']
-              when 'resource'
-                :resource_identifier_keyword
-              when 'accession'
-                :accession_identifier_keyword
-          end
-          
-          if label
-            Keyword.new(label, DocumentKeywordsGenerator.format_identifier(record))
-          end
+        case record['jsonmodel_type']
+          when 'resource'
+            Keyword.new(:resource_identifier_keyword, DocumentKeywordsGenerator.format_resource_identifier_from_uri(record['uri']))
+
+          when 'accession'
+            Keyword.new(:accession_identifier_keyword, DocumentKeywordsGenerator.format_accession_identifier_from_uri(record['uri']))
+        end
+
       end
     },
 

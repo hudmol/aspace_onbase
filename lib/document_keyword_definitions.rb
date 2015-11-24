@@ -92,7 +92,7 @@ class DocumentKeywordDefinitions
       ]},
 
     "SPCL - Missing Items Record" => {
-      :supported_records => [:event],
+      :supported_records => [:archival_object, :event],
       :fields => [
         {:type => "generated", :generator => :parent_system_id},
         {:type => "generated", :generator => :linked_record_system_id},

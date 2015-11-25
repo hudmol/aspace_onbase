@@ -54,6 +54,7 @@ en:
       accession_date: SPCL Accession Date
       event_processing_plan_date: SPCL Processing Plan Date
       loan_end_date: SPCL Loan End Date
+      parent_system_id: SPCL Event/Record/Accession ID
 
     actions:
       show_all: Show All

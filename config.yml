@@ -10,3 +10,6 @@ parents:
   archival_object:
     name: onbase_documents
     cardinality: zero_to_many
+  resource:
+    name: onbase_documents
+    cardinality: zero_to_many
